@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="second_ratingbar" type="id" />
+    <item name="second_back_arrow" type="id" />
+    <item name="second_title" type="id" />
+    <item name="second_subtitle" type="id" />
+    <item name="second_rating_number" type="id" />
+    <item name="second_rating_number2" type="id" />
+    <item name="seconf_arrow_up" type="id" />
+    <item name="more_details" type="id" />
+</resources>
