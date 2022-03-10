@@ -13,7 +13,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="360dp"
+        app:layout_constraintGuide_end="380dp"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
@@ -23,7 +23,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="360dp"
+        app:layout_constraintGuide_begin="380dp"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
@@ -31,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
         android:fontFamily="@font/open_sans_light"
         android:text="One"
         android:textColor="@color/colorPrimary"
@@ -69,6 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/open_sans_light"
+        android:layout_marginLeft="20dp"
         android:text="a"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
@@ -88,22 +90,35 @@
         app:layout_constraintStart_toEndOf="@id/textView3"
         app:layout_constraintTop_toTopOf="@id/textView3"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:layout_marginRight="5dp"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/guideline2"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:src="@drawable/ic_settings"/>-->
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageProfile"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
+        android:background="@drawable/background_icon"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_settings"/>
+        app:riv_corner_radius="8dp"
+        android:src="@drawable/ic_account_circle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginTop="30dp"
+        android:layout_margin="20dp"
         android:background="@drawable/custom_search_view"
         android:elevation="20dp"
         android:queryHint="Search here..."

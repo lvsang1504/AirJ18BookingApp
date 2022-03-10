@@ -1,7 +1,10 @@
 package com.devpro.airj18bookingapp.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.activities.DetailsBookingActivity;
+import com.devpro.airj18bookingapp.activities.ProfileActivity;
 import com.devpro.airj18bookingapp.adapters.BookingAdapter;
 import com.devpro.airj18bookingapp.listeners.BookingClicksListener;
 import com.devpro.airj18bookingapp.models.Hotel;
+import com.devpro.airj18bookingapp.utils.Constants;
+import com.devpro.airj18bookingapp.utils.PreferenceManager;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +34,15 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     TextView textView, textView2, textView3, textView4, textView5;
+    RoundedImageView imageProfile;
     SearchView searchView;
 
     Animation anim_from_button, anim_from_top, anim_from_left;
     RecyclerView recyclerView;
     BookingAdapter adapter;
     List<Hotel> list = new ArrayList<>();
+
+    private PreferenceManager preferenceManager;
 
 
     @Override
@@ -52,18 +62,21 @@ public class HomeFragment extends Fragment {
         list.add(new Hotel(1, "RedDoorz Chau Thien Tu 3 Hotel ", "https://dichvuthuexe.vn/wp-content/uploads/2020/06/dat-phong-khach-san.jpg", 4.5, 100, "demo mo mo"));
         list.add(new Hotel(1, "RedDoorz Chau Thien Tu 3 Hotel ", "https://dichvuthuexe.vn/wp-content/uploads/2020/06/dat-phong-khach-san.jpg", 4.5, 100, "demo mo mo"));
 
-        textView = view.findViewById(R.id.firstText);
-        textView2 = view.findViewById(R.id.textView);
-        textView3 = view.findViewById(R.id.textView2);
-        textView4 = view.findViewById(R.id.textView3);
-        textView5 = view.findViewById(R.id.textView4);
-        searchView = view.findViewById(R.id.searchView);
-        recyclerView = view.findViewById(R.id.recycle_booking_list);
+        getViews(view);
+
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
 
         adapter = new BookingAdapter(getContext(), list, bookingClicksListener);
         recyclerView.setAdapter(adapter);
+        /////////////////
+
+        preferenceManager = new PreferenceManager(getContext());
+
+        loadUserDetails();
+
+
 
         //Load Animations
         anim_from_button = AnimationUtils.loadAnimation(getContext(), R.anim.anim_from_bottom);
@@ -97,6 +110,32 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
+    private void getViews(View view) {
+        textView = view.findViewById(R.id.firstText);
+        textView2 = view.findViewById(R.id.textView);
+        textView3 = view.findViewById(R.id.textView2);
+        textView4 = view.findViewById(R.id.textView3);
+        textView5 = view.findViewById(R.id.textView4);
+        searchView = view.findViewById(R.id.searchView);
+        recyclerView = view.findViewById(R.id.recycle_booking_list);
+        imageProfile = view.findViewById(R.id.imageProfile);
+    }
+
+    private void loadUserDetails() {
+        //binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
+        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        imageProfile.setImageBitmap(bitmap);
+
+        imageProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
+            }
+        });
+    }
+
     private final BookingClicksListener bookingClicksListener = new BookingClicksListener() {
 
         @Override
