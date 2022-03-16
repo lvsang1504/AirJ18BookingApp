@@ -15,8 +15,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devpro.airj18bookingapp.R;
+import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
+import com.devpro.airj18bookingapp.models.RoomDetail;
+import com.devpro.airj18bookingapp.repository.RequestManager;
 
 public class DetailsBookingActivity extends AppCompatActivity {
 
@@ -26,20 +30,22 @@ public class DetailsBookingActivity extends AppCompatActivity {
 
     Animation from_left, from_right, from_bottom;
 
+    RequestManager manager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_booking);
 
-        second_back_arrow = findViewById(R.id.second_back_arrow);
-        second_arrow_up = findViewById(R.id.seconf_arrow_up);
-        second_title = findViewById(R.id.second_title);
-        second_subtitle = findViewById(R.id.second_subtitle);
-        second_rating_number = findViewById(R.id.second_rating_number);
-        second_rating_number2 = findViewById(R.id.second_rating_number2);
-        more_details = findViewById(R.id.more_details);
-        second_ratingbar = findViewById(R.id.second_ratingbar);
+        getViews();
+
+        String id = getIntent().getStringExtra("id");
+
+        Toast.makeText(DetailsBookingActivity.this, id, Toast.LENGTH_LONG).show();
+
+        manager = new RequestManager(DetailsBookingActivity.this);
+        manager.getRoomDetail(roomDetailResponseListener, Integer.parseInt(id));
 
 
         second_back_arrow.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +107,28 @@ public class DetailsBookingActivity extends AppCompatActivity {
                 startActivity(intent, options.toBundle());
             }
         });
+    }
 
+    private final RoomDetailResponseListener roomDetailResponseListener = new RoomDetailResponseListener() {
+        @Override
+        public void didFetch(RoomDetail response, String message) {
+            Toast.makeText(DetailsBookingActivity.this, response.name, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void didError(String message) {
+            Toast.makeText(DetailsBookingActivity.this, message, Toast.LENGTH_LONG).show();
+        }
+    };
+
+    void getViews() {
+        second_back_arrow = findViewById(R.id.second_back_arrow);
+        second_arrow_up = findViewById(R.id.seconf_arrow_up);
+        second_title = findViewById(R.id.second_title);
+        second_subtitle = findViewById(R.id.second_subtitle);
+        second_rating_number = findViewById(R.id.second_rating_number);
+        second_rating_number2 = findViewById(R.id.second_rating_number2);
+        more_details = findViewById(R.id.more_details);
+        second_ratingbar = findViewById(R.id.second_ratingbar);
     }
 }

@@ -3,6 +3,7 @@ package com.devpro.airj18bookingapp.utils;
 import java.util.HashMap;
 
 public class Constants {
+    public static final String BASE_URL = "https://airj18.skqist225.xyz";
     public static final String KEY_COLLECTION_USER = "users";
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
