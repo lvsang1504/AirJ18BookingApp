@@ -53,9 +53,6 @@ public class HomeFragment extends Fragment {
 
     RequestManager manager;
 
-    RecyclerView recyclerViewCategory;
-    CategoryAdapter categoryAdapter;
-//    List<Category> categories=new ArrayList<>();
 
     RecyclerView recyclerView;
     BookingAdapter adapter;
@@ -184,7 +181,6 @@ public class HomeFragment extends Fragment {
         textView5 = view.findViewById(R.id.textView4);
         searchView = view.findViewById(R.id.searchView);
         recyclerView = view.findViewById(R.id.recycle_booking_list);
-        recyclerViewCategory = view.findViewById(R.id.recycle_booking_category);
         imageProfile = view.findViewById(R.id.imageProfile);
         tabLayout = view.findViewById(R.id.tabLayout);
 
@@ -193,7 +189,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadUserDetails() {
-        //binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
+        System.out.println(preferenceManager.getString(Constants.KEY_IMAGE));
         byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         imageProfile.setImageBitmap(bitmap);

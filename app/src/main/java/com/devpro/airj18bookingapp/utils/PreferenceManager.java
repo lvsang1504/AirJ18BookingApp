@@ -3,12 +3,13 @@ package com.devpro.airj18bookingapp.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.devpro.airj18bookingapp.activities.MainActivity;
+
 public class PreferenceManager {
     private final SharedPreferences sharedPreferences;
 
     public PreferenceManager(Context context) {
         sharedPreferences = context.getSharedPreferences(Constants.KEY_PREFERENCE_NAME, Context.MODE_PRIVATE);
-
     }
 
     public void putBoolean(String key, Boolean value) {
@@ -36,5 +37,4 @@ public class PreferenceManager {
         editor.clear();
         editor.apply();
     }
-
 }

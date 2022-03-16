@@ -2,6 +2,7 @@ package com.devpro.airj18bookingapp.activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -21,16 +22,21 @@ import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.models.RoomDetail;
 import com.devpro.airj18bookingapp.repository.RequestManager;
+import com.devpro.airj18bookingapp.utils.Constants;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 public class DetailsBookingActivity extends AppCompatActivity {
 
-    ImageView second_back_arrow, second_arrow_up;
+    ImageView second_back_arrow, second_arrow_up, image_background;
     TextView second_title, second_subtitle, second_rating_number, second_rating_number2, more_details;
     RatingBar second_ratingbar;
 
     Animation from_left, from_right, from_bottom;
 
     RequestManager manager;
+
+    String id;
 
 
     @Override
@@ -40,9 +46,8 @@ public class DetailsBookingActivity extends AppCompatActivity {
 
         getViews();
 
-        String id = getIntent().getStringExtra("id");
+        id = getIntent().getStringExtra("id");
 
-        Toast.makeText(DetailsBookingActivity.this, id, Toast.LENGTH_LONG).show();
 
         manager = new RequestManager(DetailsBookingActivity.this);
         manager.getRoomDetail(roomDetailResponseListener, Integer.parseInt(id));
@@ -51,8 +56,7 @@ public class DetailsBookingActivity extends AppCompatActivity {
         second_back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailsBookingActivity.this, MainActivity.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -80,7 +84,6 @@ public class DetailsBookingActivity extends AppCompatActivity {
         from_bottom = AnimationUtils.loadAnimation(this, R.anim.anim_from_bottom);
 
 
-
         //Set Animations
         second_back_arrow.setAnimation(from_left);
         second_title.setAnimation(from_right);
@@ -93,26 +96,35 @@ public class DetailsBookingActivity extends AppCompatActivity {
 
 
 
-        second_arrow_up.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DetailsBookingActivity.this, ShowMoreActivity.class);
-
-                Pair[] pairs = new Pair[1];
-                pairs[0] = new Pair<View, String>(second_arrow_up, "background_image_transition");
-
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(DetailsBookingActivity.this, pairs);
-
-                startActivity(intent, options.toBundle());
-            }
-        });
     }
 
     private final RoomDetailResponseListener roomDetailResponseListener = new RoomDetailResponseListener() {
         @Override
         public void didFetch(RoomDetail response, String message) {
-            Toast.makeText(DetailsBookingActivity.this, response.name, Toast.LENGTH_LONG).show();
+            second_title.setText(response.name);
+            second_subtitle.setText(response.description);
+            second_rating_number2.setText(response.reviews.size() + "");
+            Picasso.get().load(Constants.BASE_URL + response.thumbnail).into(image_background);
+
+            second_arrow_up.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(DetailsBookingActivity.this, ShowMoreActivity.class);
+
+                    Pair[] pairs = new Pair[1];
+                    pairs[0] = new Pair<View, String>(second_arrow_up, "background_image_transition");
+
+
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(DetailsBookingActivity.this, pairs);
+
+                    Gson gson = new Gson();
+                    String myJson = gson.toJson(response);
+                    intent.putExtra("room_detail", myJson);
+
+                    startActivity(intent, options.toBundle());
+                }
+            });
         }
 
         @Override
@@ -130,5 +142,6 @@ public class DetailsBookingActivity extends AppCompatActivity {
         second_rating_number2 = findViewById(R.id.second_rating_number2);
         more_details = findViewById(R.id.more_details);
         second_ratingbar = findViewById(R.id.second_ratingbar);
+        image_background = findViewById(R.id.image_background);
     }
 }

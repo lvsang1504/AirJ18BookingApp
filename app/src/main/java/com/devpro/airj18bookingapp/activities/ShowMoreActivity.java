@@ -14,17 +14,26 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devpro.airj18bookingapp.R;
+import com.devpro.airj18bookingapp.models.RoomDetail;
+import com.devpro.airj18bookingapp.utils.Constants;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 public class ShowMoreActivity extends AppCompatActivity {
 
 
-    ImageView down_arrow;
+    ImageView down_arrow, header_background;
+    TextView third_title, third_rating_number,about_text;
 
     ScrollView third_scrollview;
 
     Animation from_bottom;
+
+    RoomDetail roomDetail;
 
 
     @Override
@@ -32,11 +41,26 @@ public class ShowMoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_more);
 
+        String json = getIntent().getStringExtra("room_detail");
+
+        Gson gson = new Gson();
+        roomDetail = gson.fromJson(json, RoomDetail.class);
+
         down_arrow = findViewById(R.id.down_arrow);
         third_scrollview = findViewById(R.id.third_scrillview);
+        header_background = findViewById(R.id.header_background);
+        third_title = findViewById(R.id.third_title);
+        third_rating_number = findViewById(R.id.third_rating_number);
+        about_text = findViewById(R.id.about_text);
+
+        Picasso.get().load(Constants.BASE_URL + roomDetail.thumbnail).into(header_background);
+        third_title.setText(roomDetail.name);
+        third_rating_number.setText(roomDetail.averageRating + "");
+        about_text.setText(roomDetail.description);
+
+
 
         from_bottom = AnimationUtils.loadAnimation(this, R.anim.anim_from_bottom);
-
         down_arrow.setAnimation(from_bottom);
         third_scrollview.setAnimation(from_bottom);
 
@@ -62,16 +86,16 @@ public class ShowMoreActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowMoreActivity.this, DetailsBookingActivity.class);
-
-                Pair[] pairs = new Pair[1];
-                pairs[0] = new Pair<View, String>(down_arrow, "background_image_transition");
-
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ShowMoreActivity.this, pairs);
-                startActivity(intent, options.toBundle());
+                onBackPressed();
             }
         });
 
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

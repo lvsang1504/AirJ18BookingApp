@@ -5,10 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.DetailsBookingActivity"
-    android:background="@drawable/background"
     android:transitionName="background_image_transition"
     tools:targetApi="LOLLIPOP">
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/image_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/background"/>
+        <View
+            android:background="@drawable/layer_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
     <ImageView
         android:id="@+id/second_back_arrow"
         android:layout_width="wrap_content"
