@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Room {
     public String thumbnail;
-//    public List<String> images=[];
-//    public ArrayList<Integer> likedByUsers;
-    public int price;
+    public ArrayList<String> images;
+    public ArrayList<Integer> likedByUsers;
+    public double price;
     public String name;
     public String currencySymbol;
     public int id;

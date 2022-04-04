@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".activities.ProfileActivity">
 
     <ImageView
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
-        android:src="@drawable/background_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +75,7 @@
         android:orientation="vertical"
         android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_main_background">
+        app:layout_constraintTop_toBottomOf="@+id/profile_username">
 
         <TextView
             android:id="@+id/profile_name_text"
@@ -84,7 +84,7 @@
             android:fontFamily="@font/open_sans_bold"
             android:text="Name"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_main_background" />
 
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_light"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="22sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/profile_name_text"
             app:layout_constraintTop_toBottomOf="@+id/profile_name_text"
             tools:text="Android Tutorials" />
@@ -107,7 +107,7 @@
             android:fontFamily="@font/open_sans_bold"
             android:text="Email"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/profile_name"
             app:layout_constraintTop_toBottomOf="@+id/profile_name" />
 
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_light"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="22sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/profile_email_text"
             app:layout_constraintTop_toBottomOf="@+id/profile_email_text"
             tools:text="qwertyuio@gmail.com" />

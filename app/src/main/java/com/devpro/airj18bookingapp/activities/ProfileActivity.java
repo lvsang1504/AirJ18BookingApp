@@ -92,24 +92,28 @@ public class ProfileActivity extends AppCompatActivity {
         profile_email.setText(preferenceManager.getString(Constants.KEY_EMAIL));
         profile_username.setText(preferenceManager.getString(Constants.KEY_NAME));
         profile_name.setText(preferenceManager.getString(Constants.KEY_NAME));
-        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        profile_image.setImageBitmap(bitmap);
+        if(preferenceManager.getString(Constants.KEY_IMAGE)!=null){
+            profile_name.setText(preferenceManager.getString(Constants.KEY_NAME));
+            byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            profile_image.setImageBitmap(bitmap);
+        }
     }
 
     private void signOut() {
         showToast("Signing out ...");
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USER).document(preferenceManager.getString(Constants.KEY_USER_ID));
-        HashMap<String, Object> updates = new HashMap<>();
-        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
-        documentReference.update(updates)
-                .addOnSuccessListener(unused -> {
-                    preferenceManager.clear();
+        preferenceManager.clear();
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USER).document(preferenceManager.getString(Constants.KEY_USER_ID));
+//        HashMap<String, Object> updates = new HashMap<>();
+//        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
+//        documentReference.update(updates)
+//                .addOnSuccessListener(unused -> {
+//                    preferenceManager.clear();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();
-                })
-                .addOnFailureListener(e -> showToast("Unable to sign out"));
+//                })
+//                .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 
     private void getViews() {

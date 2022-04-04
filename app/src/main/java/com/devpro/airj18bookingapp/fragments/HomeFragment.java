@@ -32,7 +32,9 @@ import com.devpro.airj18bookingapp.listeners.CategoryClicksListener;
 import com.devpro.airj18bookingapp.listeners.CategoryResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
 import com.devpro.airj18bookingapp.models.Category;
+import com.devpro.airj18bookingapp.models.CategoryResponse;
 import com.devpro.airj18bookingapp.models.Room;
+import com.devpro.airj18bookingapp.models.RoomResponse;
 import com.devpro.airj18bookingapp.repository.RequestManager;
 import com.devpro.airj18bookingapp.utils.Constants;
 import com.devpro.airj18bookingapp.utils.PreferenceManager;
@@ -114,8 +116,10 @@ public class HomeFragment extends Fragment {
 
     private final CategoryResponseListener categoryResponseListener = new CategoryResponseListener() {
         @Override
-        public void didFetch(List<Category> response, String message) {
-            for (Category category : response
+        public void didFetch(CategoryResponse response, String message) {
+
+            List<Category> categories = response.data;
+            for (Category category : categories
             ) {
                 tabLayout.addTab(tabLayout.newTab().setText(category.name));
             }
@@ -159,14 +163,13 @@ public class HomeFragment extends Fragment {
 
     private final RoomResponseListener randomRecipeResponseListener = new RoomResponseListener() {
         @Override
-        public void didFetch(List<Room> response, String message) {
+        public void didFetch(RoomResponse response, String message) {
             dialog.dismiss();
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            adapter = new BookingAdapter(getContext(), response, bookingClicksListener);
+            adapter = new BookingAdapter(getContext(), response.data, bookingClicksListener);
             recyclerView.setAdapter(adapter);
         }
-
         @Override
         public void didError(String message) {
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
@@ -190,9 +193,11 @@ public class HomeFragment extends Fragment {
 
     private void loadUserDetails() {
         System.out.println(preferenceManager.getString(Constants.KEY_IMAGE));
-        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        imageProfile.setImageBitmap(bitmap);
+        if(preferenceManager.getString(Constants.KEY_IMAGE)!= null){
+            byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            imageProfile.setImageBitmap(bitmap);
+        }
 
         imageProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +208,6 @@ public class HomeFragment extends Fragment {
     }
 
     private final BookingClicksListener bookingClicksListener = new BookingClicksListener() {
-
         @Override
         public void onBookingClicked(String id) {
             startActivity(new Intent(getActivity(), DetailsBookingActivity.class)

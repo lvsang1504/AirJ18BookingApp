@@ -8,8 +8,11 @@ import com.devpro.airj18bookingapp.listeners.LoginResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
 import com.devpro.airj18bookingapp.models.Category;
+import com.devpro.airj18bookingapp.models.CategoryResponse;
 import com.devpro.airj18bookingapp.models.Room;
 import com.devpro.airj18bookingapp.models.RoomDetail;
+import com.devpro.airj18bookingapp.models.RoomDetailResponse;
+import com.devpro.airj18bookingapp.models.RoomResponse;
 import com.devpro.airj18bookingapp.models.UserLogin;
 import com.devpro.airj18bookingapp.models.UserResponse;
 
@@ -44,10 +47,10 @@ public class RequestManager {
 
     public void getCategories(CategoryResponseListener listener) {
         CallCategories callCategories = retrofit.create(CallCategories.class);
-        Call<List<Category>> call = callCategories.categoryResponseCall();
-        call.enqueue(new Callback<List<Category>>() {
+        Call<CategoryResponse> call = callCategories.categoryResponseCall();
+        call.enqueue(new Callback<CategoryResponse>() {
             @Override
-            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
                 if (!response.isSuccessful()) {
                     listener.didError(response.message());
                     return;
@@ -56,7 +59,7 @@ public class RequestManager {
             }
 
             @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
                 listener.didError(t.getMessage());
             }
         });
@@ -64,10 +67,10 @@ public class RequestManager {
 
     public void getRoomByCategory(RoomResponseListener listener, int id) {
         CallRoomByCategory callRandomRecipes = retrofit.create(CallRoomByCategory.class);
-        Call<List<Room>> call = callRandomRecipes.roomResponseCall(id);
-        call.enqueue(new Callback<List<Room>>() {
+        Call<RoomResponse> call = callRandomRecipes.roomResponseCall(id);
+        call.enqueue(new Callback<RoomResponse>() {
             @Override
-            public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
+            public void onResponse(Call<RoomResponse> call, Response<RoomResponse> response) {
                 if (!response.isSuccessful()) {
                     listener.didError(response.message());
                     return;
@@ -77,7 +80,7 @@ public class RequestManager {
             }
 
             @Override
-            public void onFailure(Call<List<Room>> call, Throwable t) {
+            public void onFailure(Call<RoomResponse> call, Throwable t) {
                 listener.didError(t.getMessage());
             }
         });
@@ -85,10 +88,10 @@ public class RequestManager {
 
     public void getRoomDetail(RoomDetailResponseListener listener, int id) {
         CallRoomDetail callRoomDetail = retrofit.create(CallRoomDetail.class);
-        Call<RoomDetail> call = callRoomDetail.roomDetailResponseCall(id);
-        call.enqueue(new Callback<RoomDetail>() {
+        Call<RoomDetailResponse> call = callRoomDetail.roomDetailResponseCall(id);
+        call.enqueue(new Callback<RoomDetailResponse>() {
             @Override
-            public void onResponse(Call<RoomDetail> call, Response<RoomDetail> response) {
+            public void onResponse(Call<RoomDetailResponse> call, Response<RoomDetailResponse> response) {
                 if (!response.isSuccessful()) {
                     listener.didError(response.message());
                     return;
@@ -97,7 +100,7 @@ public class RequestManager {
             }
 
             @Override
-            public void onFailure(Call<RoomDetail> call, Throwable t) {
+            public void onFailure(Call<RoomDetailResponse> call, Throwable t) {
                 listener.didError(t.getMessage());
             }
         });
@@ -114,7 +117,7 @@ public class RequestManager {
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response.errorBody().string());
-                            String errorMessage = jsonObject.getString("errorMessage");
+                            String errorMessage = jsonObject.getString("error");
                             listener.didError(errorMessage);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -124,8 +127,13 @@ public class RequestManager {
                     }
                     return;
                 }
+                List<String> Cookielist = response.headers().values("Set-Cookie");
+                String jsessionid = (Cookielist .get(0).split(";"))[0];
 
-                listener.didFetch(response.body(), response.message());
+
+                Log.d("Header",jsessionid);
+                Log.d("Header",jsessionid.substring(5));
+                listener.didFetch(response.body(), response.message(), jsessionid.substring(5));
             }
 
             @Override
@@ -137,21 +145,21 @@ public class RequestManager {
 
     private interface CallCategories {
         @GET("/api/categories")
-        Call<List<Category>> categoryResponseCall();
+        Call<CategoryResponse> categoryResponseCall();
     }
 
     private interface CallLogin {
-        @POST("api/user/login")
+        @POST("api/auth/login")
         Call<UserResponse> loginUser(@Body UserLogin userLogin);
     }
 
     private interface CallRoomByCategory {
         @GET("/api/rooms")
-        Call<List<Room>> roomResponseCall(@Query("categoryId") int id);
+        Call<RoomResponse> roomResponseCall(@Query("categoryId") int id);
     }
 
     private interface CallRoomDetail {
         @GET("/api/room/{id}")
-        Call<RoomDetail> roomDetailResponseCall(@Path("id") int id);
+        Call<RoomDetailResponse> roomDetailResponseCall(@Path("id") int id);
     }
 }

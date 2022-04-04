@@ -7,11 +7,13 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ public class ShowMoreActivity extends AppCompatActivity {
 
     ImageView down_arrow, header_background;
     TextView third_title, third_rating_number,about_text;
+    Button roadmap_button;
 
     ScrollView third_scrollview;
 
@@ -52,7 +55,9 @@ public class ShowMoreActivity extends AppCompatActivity {
         third_title = findViewById(R.id.third_title);
         third_rating_number = findViewById(R.id.third_rating_number);
         about_text = findViewById(R.id.about_text);
+        roadmap_button = findViewById(R.id.roadmap_button);
 
+        Log.d("DDDD",Constants.BASE_URL + roomDetail.thumbnail);
         Picasso.get().load(Constants.BASE_URL + roomDetail.thumbnail).into(header_background);
         third_title.setText(roomDetail.name);
         third_rating_number.setText(roomDetail.averageRating + "");
@@ -63,6 +68,14 @@ public class ShowMoreActivity extends AppCompatActivity {
         from_bottom = AnimationUtils.loadAnimation(this, R.anim.anim_from_bottom);
         down_arrow.setAnimation(from_bottom);
         third_scrollview.setAnimation(from_bottom);
+
+        roadmap_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowMoreActivity.this, MapViewActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         //Hide status bar and navigation bar at the bottom

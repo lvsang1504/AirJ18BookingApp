@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.models.RoomDetail;
+import com.devpro.airj18bookingapp.models.RoomDetailResponse;
 import com.devpro.airj18bookingapp.repository.RequestManager;
 import com.devpro.airj18bookingapp.utils.Constants;
 import com.google.gson.Gson;
@@ -100,11 +101,11 @@ public class DetailsBookingActivity extends AppCompatActivity {
 
     private final RoomDetailResponseListener roomDetailResponseListener = new RoomDetailResponseListener() {
         @Override
-        public void didFetch(RoomDetail response, String message) {
-            second_title.setText(response.name);
-            second_subtitle.setText(response.description);
-            second_rating_number2.setText(response.reviews.size() + "");
-            Picasso.get().load(Constants.BASE_URL + response.thumbnail).into(image_background);
+        public void didFetch(RoomDetailResponse response, String message) {
+            second_title.setText(response.data.name);
+            second_subtitle.setText(response.data.description);
+            second_rating_number2.setText(response.data.reviews.size() + "");
+            Picasso.get().load(Constants.BASE_URL + response.data.thumbnail).into(image_background);
 
             second_arrow_up.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -119,7 +120,7 @@ public class DetailsBookingActivity extends AppCompatActivity {
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(DetailsBookingActivity.this, pairs);
 
                     Gson gson = new Gson();
-                    String myJson = gson.toJson(response);
+                    String myJson = gson.toJson(response.data);
                     intent.putExtra("room_detail", myJson);
 
                     startActivity(intent, options.toBundle());

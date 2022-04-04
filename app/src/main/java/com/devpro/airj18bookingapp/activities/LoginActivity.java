@@ -122,53 +122,32 @@ public class LoginActivity extends AppCompatActivity {
     private void signIn() {
         loading(true);
         requestManager.getLogin(loginResponseListener, new UserLogin(inputEmail.getText().toString(), inputPassword.getText().toString()));
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        database.collection(Constants.KEY_COLLECTION_USER)
-//                .whereEqualTo(Constants.KEY_EMAIL, inputEmail.getText().toString().trim())
-//                .whereEqualTo(Constants.KEY_PASSWORD, inputPassword.getText().toString().trim())
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size()>0){
-//                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-//                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-//                        preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
-//                        preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
-//                        preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
-//                        preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
-//                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//                    }else  {
-//                        loading(false);
-//                        showToast("Unable to sign in");
-//                    }
-//                });
-
-
     }
 
     private final LoginResponseListener loginResponseListener = new LoginResponseListener() {
         //thuan.leminhthuan.10.2@gmail.com
+        // pass:12345678
         @Override
-        public void didFetch(UserResponse userResponse, String message) {
-            if (userResponse.errorMessage == null) {
+        public void didFetch(UserResponse userResponse, String message, String cookie) {
+            if (userResponse.error == null) {
                 preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-                preferenceManager.putString(Constants.KEY_USER_ID, userResponse.user.id+"");
-                preferenceManager.putString(Constants.KEY_NAME, userResponse.user.fullName);
+                preferenceManager.putString(Constants.KEY_USER_ID, userResponse.data.id+"");
+                preferenceManager.putString(Constants.KEY_NAME, userResponse.data.fullName);
+                preferenceManager.putString(Constants.KEY_COOKIE, cookie);
 
+                Log.d("VVV",Constants.BASE_URL + userResponse.data.avatarPath);
                 AsyncGettingBitmapFromUrl gettingBitmapFromUrl = new AsyncGettingBitmapFromUrl();
-                gettingBitmapFromUrl.execute(Constants.BASE_URL + userResponse.user.avatarPath);
-
-                preferenceManager.putString(Constants.KEY_EMAIL, userResponse.user.email);
+                gettingBitmapFromUrl.execute(Constants.BASE_URL + userResponse.data.avatarPath);
 
 
+                preferenceManager.putString(Constants.KEY_EMAIL, userResponse.data.email);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
             } else {
-                Toast.makeText(LoginActivity.this, userResponse.errorMessage.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, userResponse.error.toString(), Toast.LENGTH_SHORT).show();
                 loading(false);
             }
         }

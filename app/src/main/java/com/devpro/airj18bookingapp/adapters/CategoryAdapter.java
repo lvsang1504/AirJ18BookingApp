@@ -43,8 +43,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         holder.txt_title.setText(list.get(position).name);
         holder.txt_title.setSelected(true);
         holder.layout_category.setBackgroundResource(R.drawable.custom_border);
-        Log.d("RRR", Constants.BASE_URL + list.get(position).iconPath);
-        Picasso.get().load(Constants.BASE_URL + list.get(position).iconPath).into(holder.imageView);
+        Log.d("RRR", Constants.BASE_URL + list.get(position).icon);
+        Picasso.get().load(Constants.BASE_URL + list.get(position).icon).into(holder.imageView);
 
         holder.layout_category.setOnClickListener(new View.OnClickListener() {
             @Override

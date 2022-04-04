@@ -1,7 +1,7 @@
 package com.devpro.airj18bookingapp.models;
 
-public class UserResponse {
+public class RoomDetailResponse {
     public boolean success;
-    public User data;
+    public RoomDetail data;
     public Object error;
 }

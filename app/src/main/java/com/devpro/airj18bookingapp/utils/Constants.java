@@ -6,6 +6,7 @@ public class Constants {
     public static final String BASE_URL = "https://airj18.skqist225.xyz";
     public static final String KEY_COLLECTION_USER = "users";
     public static final String KEY_NAME = "name";
+    public static final String KEY_COOKIE = "cookie";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_PREFERENCE_NAME = "chatAppPreference";

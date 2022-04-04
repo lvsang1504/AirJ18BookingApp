@@ -1,7 +1,8 @@
 package com.devpro.airj18bookingapp.models;
+import java.util.ArrayList;
 
-public class UserResponse {
+public class CategoryResponse {
     public boolean success;
-    public User data;
+    public ArrayList<Category> data;
     public Object error;
 }
