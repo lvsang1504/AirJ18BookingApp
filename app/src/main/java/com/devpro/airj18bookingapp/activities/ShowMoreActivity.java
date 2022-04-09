@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class ShowMoreActivity extends AppCompatActivity {
     ImageView down_arrow, header_background;
     TextView third_title, third_rating_number,about_text;
     Button roadmap_button;
+
+    LinearLayout btnBooking;
 
     ScrollView third_scrollview;
 
@@ -56,8 +59,8 @@ public class ShowMoreActivity extends AppCompatActivity {
         third_rating_number = findViewById(R.id.third_rating_number);
         about_text = findViewById(R.id.about_text);
         roadmap_button = findViewById(R.id.roadmap_button);
+        btnBooking = findViewById(R.id.btnBooking);
 
-        Log.d("DDDD",Constants.BASE_URL + roomDetail.thumbnail);
         Picasso.get().load(Constants.BASE_URL + roomDetail.thumbnail).into(header_background);
         third_title.setText(roomDetail.name);
         third_rating_number.setText(roomDetail.averageRating + "");
@@ -68,11 +71,26 @@ public class ShowMoreActivity extends AppCompatActivity {
         from_bottom = AnimationUtils.loadAnimation(this, R.anim.anim_from_bottom);
         down_arrow.setAnimation(from_bottom);
         third_scrollview.setAnimation(from_bottom);
+        btnBooking.setAnimation(from_bottom);
+
+        btnBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowMoreActivity.this, BookingActivity.class);
+
+                startActivity(intent);
+            }
+        });
 
         roadmap_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowMoreActivity.this, MapViewActivity.class);
+
+                Gson gson = new Gson();
+                String myJson = gson.toJson(roomDetail);
+                intent.putExtra("room_detail", myJson);
+
                 startActivity(intent);
             }
         });

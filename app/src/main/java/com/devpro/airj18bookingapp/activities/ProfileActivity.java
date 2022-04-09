@@ -19,9 +19,6 @@ import android.widget.Toast;
 import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.utils.Constants;
 import com.devpro.airj18bookingapp.utils.PreferenceManager;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.HashMap;

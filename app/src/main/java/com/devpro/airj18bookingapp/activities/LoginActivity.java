@@ -27,8 +27,6 @@ import com.devpro.airj18bookingapp.models.UserResponse;
 import com.devpro.airj18bookingapp.repository.RequestManager;
 import com.devpro.airj18bookingapp.utils.Constants;
 import com.devpro.airj18bookingapp.utils.PreferenceManager;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -63,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         preferenceManager = new PreferenceManager(getApplicationContext());
+
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
@@ -121,8 +120,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signIn() {
         loading(true);
-        requestManager.getLogin(loginResponseListener, new UserLogin(inputEmail.getText().toString(), inputPassword.getText().toString()));
+        if (isValidSignUpDetails()) {
+            requestManager.getLogin(loginResponseListener, new UserLogin(inputEmail.getText().toString(), inputPassword.getText().toString()));
+        }
+
     }
+
 
     private final LoginResponseListener loginResponseListener = new LoginResponseListener() {
         //thuan.leminhthuan.10.2@gmail.com
@@ -131,16 +134,18 @@ public class LoginActivity extends AppCompatActivity {
         public void didFetch(UserResponse userResponse, String message, String cookie) {
             if (userResponse.error == null) {
                 preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-                preferenceManager.putString(Constants.KEY_USER_ID, userResponse.data.id+"");
+                preferenceManager.putString(Constants.KEY_USER_ID, userResponse.data.id + "");
                 preferenceManager.putString(Constants.KEY_NAME, userResponse.data.fullName);
                 preferenceManager.putString(Constants.KEY_COOKIE, cookie);
 
-                Log.d("VVV",Constants.BASE_URL + userResponse.data.avatarPath);
+                Log.d("VVV", Constants.BASE_URL + userResponse.data.avatarPath);
                 AsyncGettingBitmapFromUrl gettingBitmapFromUrl = new AsyncGettingBitmapFromUrl();
                 gettingBitmapFromUrl.execute(Constants.BASE_URL + userResponse.data.avatarPath);
 
 
                 preferenceManager.putString(Constants.KEY_EMAIL, userResponse.data.email);
+
+
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -159,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    public static  Bitmap downloadImage(String url) {
+    public static Bitmap downloadImage(String url) {
         Bitmap bitmap = null;
         InputStream stream = null;
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -169,17 +174,16 @@ public class LoginActivity extends AppCompatActivity {
             stream = getHttpConnection(url);
             bitmap = BitmapFactory.decodeStream(stream, null, bmOptions);
             stream.close();
-        }
-        catch (IOException e1) {
+        } catch (IOException e1) {
             e1.printStackTrace();
-            System.out.println("downloadImage"+ e1.toString());
+            System.out.println("downloadImage" + e1.toString());
         }
         return bitmap;
     }
 
     // Makes HttpURLConnection and returns InputStream
 
-    public static  InputStream getHttpConnection(String urlString)  throws IOException {
+    public static InputStream getHttpConnection(String urlString) throws IOException {
 
         InputStream stream = null;
         URL url = new URL(urlString);
@@ -193,8 +197,7 @@ public class LoginActivity extends AppCompatActivity {
             if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 stream = httpConnection.getInputStream();
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("downloadImage" + ex.toString());
         }
@@ -260,7 +263,7 @@ public class LoginActivity extends AppCompatActivity {
             String imageString = encodeImage(bitmap);
             Log.d("AAAA", imageString);
 
-            preferenceManager.putString(Constants.KEY_IMAGE,imageString);
+            preferenceManager.putString(Constants.KEY_IMAGE, imageString);
 
         }
     }

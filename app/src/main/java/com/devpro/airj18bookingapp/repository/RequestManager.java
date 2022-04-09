@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.devpro.airj18bookingapp.listeners.CategoryResponseListener;
 import com.devpro.airj18bookingapp.listeners.LoginResponseListener;
+import com.devpro.airj18bookingapp.listeners.RegisterResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
 import com.devpro.airj18bookingapp.models.Category;
@@ -14,6 +15,7 @@ import com.devpro.airj18bookingapp.models.RoomDetail;
 import com.devpro.airj18bookingapp.models.RoomDetailResponse;
 import com.devpro.airj18bookingapp.models.RoomResponse;
 import com.devpro.airj18bookingapp.models.UserLogin;
+import com.devpro.airj18bookingapp.models.UserRegister;
 import com.devpro.airj18bookingapp.models.UserResponse;
 
 import org.json.JSONException;
@@ -117,8 +119,47 @@ public class RequestManager {
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response.errorBody().string());
-                            String errorMessage = jsonObject.getString("error");
-                            listener.didError(errorMessage);
+                            JSONObject errorMessage = jsonObject.getJSONObject("error");
+                            listener.didError(errorMessage.getString("message"));
+                        } catch (JSONException e) {
+                            listener.didError(e.toString());
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            listener.didError(e.toString());
+                            e.printStackTrace();
+                        }
+                    }
+                    return;
+                }
+                List<String> Cookielist = response.headers().values("Set-Cookie");
+                String jsessionid = (Cookielist.get(0).split(";"))[0];
+
+
+                Log.d("Header", jsessionid);
+                Log.d("Header", jsessionid.substring(5));
+                listener.didFetch(response.body(), response.message(), jsessionid.substring(5));
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
+
+    public void getRegister(RegisterResponseListener listener, UserRegister userRegister) {
+        CallRegister callRegister = retrofit.create(CallRegister.class);
+        Call<UserResponse> call = callRegister.registerUser(userRegister);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.code() == 400) {
+                    if (!response.isSuccessful()) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.errorBody().string());
+                            JSONObject errorMessage = jsonObject.getJSONObject("error");
+                            listener.didError(errorMessage.getString("message"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -127,18 +168,15 @@ public class RequestManager {
                     }
                     return;
                 }
-                List<String> Cookielist = response.headers().values("Set-Cookie");
-                String jsessionid = (Cookielist .get(0).split(";"))[0];
 
+                System.out.println(response.body().toString());
+                    listener.didFetch(response.body(), response.message());
 
-                Log.d("Header",jsessionid);
-                Log.d("Header",jsessionid.substring(5));
-                listener.didFetch(response.body(), response.message(), jsessionid.substring(5));
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                listener.didError(t.getMessage());
+                listener.didError("Error0: " + t.getMessage());
             }
         });
     }
@@ -151,6 +189,11 @@ public class RequestManager {
     private interface CallLogin {
         @POST("api/auth/login")
         Call<UserResponse> loginUser(@Body UserLogin userLogin);
+    }
+
+    private interface CallRegister {
+        @POST("api/user/register")
+        Call<UserResponse> registerUser(@Body UserRegister userRegister);
     }
 
     private interface CallRoomByCategory {

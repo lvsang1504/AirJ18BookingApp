@@ -1,5 +1,6 @@
 package com.devpro.airj18bookingapp.fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,12 +44,14 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 public class HomeFragment extends Fragment {
 
     TextView textView, textView2, textView3, textView4, textView5;
     RoundedImageView imageProfile;
     SearchView searchView;
-    ProgressDialog dialog;
+    AlertDialog dialog;
     TabLayout tabLayout;
 
     Animation anim_from_button, anim_from_top, anim_from_left, from_right;
@@ -187,8 +190,8 @@ public class HomeFragment extends Fragment {
         imageProfile = view.findViewById(R.id.imageProfile);
         tabLayout = view.findViewById(R.id.tabLayout);
 
-        dialog = new ProgressDialog(view.getContext());
-        dialog.setTitle("Loading...");
+        dialog = new SpotsDialog.Builder().setContext(getContext()).setTheme(R.style.Custom).build();
+
     }
 
     private void loadUserDetails() {
