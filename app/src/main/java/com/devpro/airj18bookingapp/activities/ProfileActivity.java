@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,9 +28,11 @@ import java.util.HashMap;
 public class ProfileActivity extends AppCompatActivity {
 
     ImageView profile_back;
-    RoundedImageView profile_image, profile_signout;
+    RoundedImageView profile_image;
+    ImageButton profile_signout;
     TextView profile_username, profile_name, profile_email;
-    LinearLayout linear_info;
+    FrameLayout linear_info;
+    LinearLayout linear;
 
     private PreferenceManager preferenceManager;
     Animation anim_from_button, anim_from_top, anim_from_left;
@@ -56,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         profile_username.setAnimation(anim_from_top);
         linear_info.setAnimation(anim_from_left);
         profile_signout.setAnimation(anim_from_button);
+        linear.setAnimation(anim_from_button);
 
         //Hide status bar and navigation bar at the bottom
         this.getWindow().setFlags(
@@ -121,6 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
         profile_name = findViewById(R.id.profile_name);
         profile_email = findViewById(R.id.profile_email);
         linear_info = findViewById(R.id.linear_info);
+        linear = findViewById(R.id.linear);
     }
 
     private void showToast(String message) {

@@ -17,6 +17,12 @@
         android:theme="@style/Theme.AirJ18BookingApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.BookingFinishActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.BookingActivity"
             android:exported="false" />
         <activity

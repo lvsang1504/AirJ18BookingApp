@@ -11,4 +11,5 @@
     <color name="input_background">#ECECEC</color>
     <color name="primary">#1C2E46</color>
     <color name="icon_background">#20FFFFFF</color>
+    <color name="red">#FF0000</color>
 </resources>

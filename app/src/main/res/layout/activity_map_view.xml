@@ -25,21 +25,11 @@
         android:padding="8dp"
         android:src="@drawable/ic_back_arrow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />L
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--        android:id="@+id/fab_location_search"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="end|bottom"-->
-    <!--        android:layout_margin="10dp"-->
-    <!--        android:tint="@android:color/white"-->
-    <!--        app:backgroundTint="@color/colorPrimary"-->
-    <!--        app:srcCompat="@android:drawable/ic_search_category_default" />-->
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="20dp"
 
@@ -57,9 +47,10 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:background="@drawable/background_icon"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_account_circle"
+                android:src="@drawable/background"
                 app:layout_constraintEnd_toStartOf="@id/guideline2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:riv_corner_radius="16dp" />
@@ -77,6 +68,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:lines="2"
                     android:layout_weight="1"
                     android:text="Name"
                     android:textSize="20dp"
@@ -90,26 +84,27 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
+                <Button
+                    android:id="@+id/confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/shape_background_cute_green_rounded"
+                    android:onClick="confirmed"
+                    android:text="Bắt đầu chỉ đường"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
 
+                    />
             </LinearLayout>
+
 
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginTop="80dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/shape_background_cute_green_rounded"
-            android:onClick="confirmed"
-            android:text="Bắt đầu chỉ đường"
-            android:textColor="@color/white"
-            android:textSize="14dp"
 
-            />
 
     </androidx.cardview.widget.CardView>
 
