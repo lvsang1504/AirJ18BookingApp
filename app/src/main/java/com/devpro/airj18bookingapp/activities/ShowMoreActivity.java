@@ -26,6 +26,8 @@ import com.devpro.airj18bookingapp.utils.Constants;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
+
 public class ShowMoreActivity extends AppCompatActivity {
 
 
@@ -77,7 +79,9 @@ public class ShowMoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowMoreActivity.this, BookingActivity.class);
-
+                Gson gson = new Gson();
+                String myJson = gson.toJson(roomDetail);
+                intent.putExtra("room_detail", myJson);
                 startActivity(intent);
             }
         });

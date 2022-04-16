@@ -3,6 +3,7 @@ package com.devpro.airj18bookingapp.repository;
 import android.content.Context;
 import android.util.Log;
 
+import com.devpro.airj18bookingapp.listeners.BookingResponseListener;
 import com.devpro.airj18bookingapp.listeners.CategoryResponseListener;
 import com.devpro.airj18bookingapp.listeners.LoginResponseListener;
 import com.devpro.airj18bookingapp.listeners.RegisterResponseListener;
@@ -10,6 +11,7 @@ import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
 import com.devpro.airj18bookingapp.models.Category;
 import com.devpro.airj18bookingapp.models.CategoryResponse;
+import com.devpro.airj18bookingapp.models.Response.BookingResponse;
 import com.devpro.airj18bookingapp.models.Room;
 import com.devpro.airj18bookingapp.models.RoomDetail;
 import com.devpro.airj18bookingapp.models.RoomDetailResponse;
@@ -31,6 +33,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -108,6 +112,26 @@ public class RequestManager {
         });
     }
 
+    public void getBooking(BookingResponseListener listener, int roomid, String checkin, String checkout,int numberOfDays,String cookie) {
+        CallBooking callBooking = retrofit.create(CallBooking.class);
+        Call<BookingResponse> call = callBooking.bookingResponseCall(roomid,checkin,checkout,numberOfDays,"any",cookie);
+        call.enqueue(new Callback<BookingResponse>() {
+            @Override
+            public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
+                if (!response.isSuccessful()) {
+                    listener.didError(response.message());
+                    return;
+                }
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<BookingResponse> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
+
     public void getLogin(LoginResponseListener listener, UserLogin userLogin) {
         CallLogin callLogin = retrofit.create(CallLogin.class);
         Call<UserResponse> call = callLogin.loginUser(userLogin);
@@ -136,8 +160,7 @@ public class RequestManager {
 
 
                 Log.d("Header", jsessionid);
-                Log.d("Header", jsessionid.substring(5));
-                listener.didFetch(response.body(), response.message(), jsessionid.substring(5));
+                listener.didFetch(response.body(), response.message(), jsessionid);
             }
 
             @Override
@@ -205,4 +228,19 @@ public class RequestManager {
         @GET("/api/room/{id}")
         Call<RoomDetailResponse> roomDetailResponseCall(@Path("id") int id);
     }
+
+    private interface CallBooking{
+        @Headers({"Content-Type: application/json"})
+        //@GET("api/booking/{roomid}/create?checkin={checkin}&checkout={checkout}&numberOfDays={numberOfDays}&clientMessage=any")
+        @GET("api/booking/{roomid}/create")
+        Call<BookingResponse> bookingResponseCall(@Path("roomid") int roomid,
+                                                  @Query("checkin") String checkin,
+                                                  @Query("checkout") String checkout,
+                                                  @Query("numberOfDays") int numberOfDays,
+                                                  @Query("clientMessage") String clientMessage,
+                                                  @Header("Cookie") String cookie);
+    }
+
+
+
 }

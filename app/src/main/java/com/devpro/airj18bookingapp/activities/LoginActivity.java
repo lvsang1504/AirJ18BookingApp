@@ -139,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                 preferenceManager.putString(Constants.KEY_COOKIE, cookie);
 
                 Log.d("VVV", Constants.BASE_URL + userResponse.data.avatarPath);
+                Log.d("cookie", cookie);
                 AsyncGettingBitmapFromUrl gettingBitmapFromUrl = new AsyncGettingBitmapFromUrl();
                 gettingBitmapFromUrl.execute(Constants.BASE_URL + userResponse.data.avatarPath);
 

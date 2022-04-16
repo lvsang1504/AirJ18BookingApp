@@ -307,6 +307,75 @@
                                 android:textColorHint="@color/md_grey_700"
                                 android:textSize="14dp" />
                         </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="20dp"
+                            android:padding="5dp"
+                            android:text="Checkin"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/box"
+                            android:padding="5dp"
+                            android:weightSum="10"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_weight="9"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtCheckin"
+                                android:text="aaa"/>
+                            <Button
+                                android:layout_weight="1"
+                                android:id="@+id/btnSetCheckin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Set"/>
+
+
+
+
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="20dp"
+                            android:padding="5dp"
+                            android:weightSum="10"
+                            android:text="Checkout"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/box"
+                            android:padding="5dp"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_weight="9"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtCheckout"
+                                android:text="aaaa"/>
+                            <Button
+                                android:layout_weight="1"
+                                android:id="@+id/btnSetCheckout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Set" />
+
+
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
