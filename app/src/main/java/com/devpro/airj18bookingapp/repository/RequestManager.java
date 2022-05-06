@@ -9,16 +9,17 @@ import com.devpro.airj18bookingapp.listeners.LoginResponseListener;
 import com.devpro.airj18bookingapp.listeners.RegisterResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
-import com.devpro.airj18bookingapp.models.Category;
+import com.devpro.airj18bookingapp.listeners.WishlistEventResponseListener;
+import com.devpro.airj18bookingapp.listeners.WishlistListResponseListener;
 import com.devpro.airj18bookingapp.models.CategoryResponse;
 import com.devpro.airj18bookingapp.models.Response.BookingResponse;
-import com.devpro.airj18bookingapp.models.Room;
-import com.devpro.airj18bookingapp.models.RoomDetail;
 import com.devpro.airj18bookingapp.models.RoomDetailResponse;
 import com.devpro.airj18bookingapp.models.RoomResponse;
 import com.devpro.airj18bookingapp.models.UserLogin;
 import com.devpro.airj18bookingapp.models.UserRegister;
 import com.devpro.airj18bookingapp.models.UserResponse;
+import com.devpro.airj18bookingapp.models.WishlistListIdResponse;
+import com.devpro.airj18bookingapp.models.WishlistResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +37,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -112,9 +114,9 @@ public class RequestManager {
         });
     }
 
-    public void getBooking(BookingResponseListener listener, int roomid, String checkin, String checkout,int numberOfDays,String cookie) {
+    public void getBooking(BookingResponseListener listener, int roomid, String checkin, String checkout, int numberOfDays, String cookie) {
         CallBooking callBooking = retrofit.create(CallBooking.class);
-        Call<BookingResponse> call = callBooking.bookingResponseCall(roomid,checkin,checkout,numberOfDays,"any",cookie);
+        Call<BookingResponse> call = callBooking.bookingResponseCall(roomid, checkin, checkout, numberOfDays, "any", cookie);
         call.enqueue(new Callback<BookingResponse>() {
             @Override
             public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
@@ -193,7 +195,7 @@ public class RequestManager {
                 }
 
                 System.out.println(response.body().toString());
-                    listener.didFetch(response.body(), response.message());
+                listener.didFetch(response.body(), response.message());
 
             }
 
@@ -204,9 +206,96 @@ public class RequestManager {
         });
     }
 
+    public void getWishlists(WishlistListResponseListener listener, String cookie) {
+        CallWishListData callWishListData = retrofit.create(CallWishListData.class);
+        Call<WishlistListIdResponse> call = callWishListData.getWishListResponseCall(cookie);
+        call.enqueue(new Callback<WishlistListIdResponse>() {
+            @Override
+            public void onResponse(Call<WishlistListIdResponse> call, Response<WishlistListIdResponse> response) {
+                if (!response.isSuccessful()) {
+                    Log.d("XXXX1", response.errorBody() + "hfdh");
+                    listener.didError(response.message());
+                    return;
+                }
+                Log.d("XXXX", response.body().success + "");
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<WishlistListIdResponse> call, Throwable t) {
+                Log.d("XXXX2", t.getMessage() + "");
+                listener.didError(t.getMessage());
+            }
+        });
+    }
+
+    public void getAddWishlist(WishlistEventResponseListener listener, String id, String cookie) {
+        CallAddWishList callAddWishlist = retrofit.create(CallAddWishList.class);
+        Call<WishlistResponse> call = callAddWishlist.addWishListResponseCall(id, cookie);
+        call.enqueue(new Callback<WishlistResponse>() {
+            @Override
+            public void onResponse(Call<WishlistResponse> call, Response<WishlistResponse> response) {
+                if (!response.isSuccessful()) {
+                    listener.didError(response.message());
+                    return;
+                }
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<WishlistResponse> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
+
+    public void getRemoveWishlist(WishlistEventResponseListener listener, String id, String cookie) {
+        CallRemoveWishList callAddWishlist = retrofit.create(CallRemoveWishList.class);
+        Call<WishlistResponse> call = callAddWishlist.removeWishListResponseCall(id, cookie);
+        call.enqueue(new Callback<WishlistResponse>() {
+            @Override
+            public void onResponse(Call<WishlistResponse> call, Response<WishlistResponse> response) {
+                if (!response.isSuccessful()) {
+                    listener.didError(response.message());
+                    return;
+                }
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<WishlistResponse> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     private interface CallCategories {
+        @Headers({"Content-Type: application/json"})
         @GET("/api/categories")
         Call<CategoryResponse> categoryResponseCall();
+    }
+
+    private interface CallWishListData {
+        @Headers({"Content-Type: application/json"})
+        @GET("/api/user/wishlists/ids")
+        Call<WishlistListIdResponse> getWishListResponseCall(@Header("Cookie") String cookie);
+    }
+
+    private interface CallAddWishList {
+        @Headers({"Content-Type: application/json"})
+        @PUT("/api/user/add-to-favoritelists/{id}")
+        Call<WishlistResponse> addWishListResponseCall(@Path("id") String id,
+                                                       @Header("Cookie") String cookie);
+    }
+
+    private interface CallRemoveWishList {
+        @Headers({"Content-Type: application/json"})
+        @PUT("/api/user/remove-from-favoritelists/{id}")
+        Call<WishlistResponse> removeWishListResponseCall(@Path("id") String id,
+                                                          @Header("Cookie") String cookie);
     }
 
     private interface CallLogin {
@@ -229,9 +318,8 @@ public class RequestManager {
         Call<RoomDetailResponse> roomDetailResponseCall(@Path("id") int id);
     }
 
-    private interface CallBooking{
+    private interface CallBooking {
         @Headers({"Content-Type: application/json"})
-        //@GET("api/booking/{roomid}/create?checkin={checkin}&checkout={checkout}&numberOfDays={numberOfDays}&clientMessage=any")
         @GET("api/booking/{roomid}/create")
         Call<BookingResponse> bookingResponseCall(@Path("roomid") int roomid,
                                                   @Query("checkin") String checkin,
@@ -240,7 +328,6 @@ public class RequestManager {
                                                   @Query("clientMessage") String clientMessage,
                                                   @Header("Cookie") String cookie);
     }
-
 
 
 }

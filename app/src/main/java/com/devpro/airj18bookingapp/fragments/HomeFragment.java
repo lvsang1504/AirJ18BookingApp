@@ -1,7 +1,6 @@
 package com.devpro.airj18bookingapp.fragments;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,29 +18,32 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.activities.DetailsBookingActivity;
 import com.devpro.airj18bookingapp.activities.ProfileActivity;
 import com.devpro.airj18bookingapp.adapters.BookingAdapter;
-import com.devpro.airj18bookingapp.adapters.CategoryAdapter;
 import com.devpro.airj18bookingapp.listeners.BookingClicksListener;
-import com.devpro.airj18bookingapp.listeners.CategoryClicksListener;
 import com.devpro.airj18bookingapp.listeners.CategoryResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
+import com.devpro.airj18bookingapp.listeners.WishlistEventResponseListener;
+import com.devpro.airj18bookingapp.listeners.WishlistListResponseListener;
 import com.devpro.airj18bookingapp.models.Category;
 import com.devpro.airj18bookingapp.models.CategoryResponse;
-import com.devpro.airj18bookingapp.models.Room;
 import com.devpro.airj18bookingapp.models.RoomResponse;
+import com.devpro.airj18bookingapp.models.WishlistListIdResponse;
+import com.devpro.airj18bookingapp.models.WishlistResponse;
 import com.devpro.airj18bookingapp.repository.RequestManager;
 import com.devpro.airj18bookingapp.utils.Constants;
 import com.devpro.airj18bookingapp.utils.PreferenceManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
@@ -57,6 +59,9 @@ public class HomeFragment extends Fragment {
     Animation anim_from_button, anim_from_top, anim_from_left, from_right;
 
     RequestManager manager;
+    List<Integer> listWishlistId = new ArrayList<>();
+
+    BottomNavigationView navBar;
 
 
     RecyclerView recyclerView;
@@ -64,21 +69,27 @@ public class HomeFragment extends Fragment {
 
     private PreferenceManager preferenceManager;
 
+    String cookie;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        navBar  = getActivity().findViewById(R.id.bottom_navigation);
+
 
         getViews(view);
 
         preferenceManager = new PreferenceManager(getContext());
-
+        cookie = preferenceManager.getString(Constants.KEY_COOKIE);
         loadUserDetails();
 
         manager = new RequestManager(getContext());
         manager.getCategories(categoryResponseListener);
+        manager.getWishlists(wishlistListResponseListener, cookie);
+
 
 
         //Load Animations
@@ -116,6 +127,21 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
+    private final WishlistListResponseListener wishlistListResponseListener = new WishlistListResponseListener() {
+        @Override
+        public void didFetch(WishlistListIdResponse response, String message) {
+            listWishlistId = response.data;
+            navBar.getOrCreateBadge(R.id.favorite)
+                    .setNumber(listWishlistId.size());
+            manager.getCategories(categoryResponseListener);
+        }
+
+        @Override
+        public void didError(String message) {
+            Log.d("XXX", message);
+        }
+    };
 
     private final CategoryResponseListener categoryResponseListener = new CategoryResponseListener() {
         @Override
@@ -155,24 +181,16 @@ public class HomeFragment extends Fragment {
         }
     };
 
-    private final CategoryClicksListener categoryClicksListener = new CategoryClicksListener() {
-        @Override
-        public void onCategoryClicked(String id) {
-            Toast.makeText(getContext(), id, Toast.LENGTH_LONG).show();
-            manager.getRoomByCategory(randomRecipeResponseListener, Integer.parseInt(id));
-            dialog.show();
-        }
-    };
-
     private final RoomResponseListener randomRecipeResponseListener = new RoomResponseListener() {
         @Override
         public void didFetch(RoomResponse response, String message) {
             dialog.dismiss();
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            adapter = new BookingAdapter(getContext(), response.data, bookingClicksListener);
+            adapter = new BookingAdapter(getContext(), response.data, listWishlistId, bookingClicksListener);
             recyclerView.setAdapter(adapter);
         }
+
         @Override
         public void didError(String message) {
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
@@ -197,7 +215,7 @@ public class HomeFragment extends Fragment {
     private void loadUserDetails() {
         System.out.println(preferenceManager.getString(Constants.KEY_IMAGE));
 
-        if(preferenceManager.getString(Constants.KEY_IMAGE)!= null){
+        if (preferenceManager.getString(Constants.KEY_IMAGE) != null) {
             byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             imageProfile.setImageBitmap(bitmap);
@@ -216,6 +234,35 @@ public class HomeFragment extends Fragment {
         public void onBookingClicked(String id) {
             startActivity(new Intent(getActivity(), DetailsBookingActivity.class)
                     .putExtra("id", id));
+        }
+
+        @Override
+        public void onBookingFavoriteClicked(String id, boolean isLiked) {
+            System.out.println(isLiked+" "+id);
+            if (isLiked) {
+                manager.getRemoveWishlist(wishlistEventResponseListener, id, cookie);
+                listWishlistId.remove(Integer.valueOf(id));
+            } else {
+                manager.getAddWishlist(wishlistEventResponseListener, id, cookie);
+                listWishlistId.add(Integer.parseInt(id));
+            }
+
+            navBar.getOrCreateBadge(R.id.favorite)
+                    .setNumber(listWishlistId.size());
+
+            adapter.notifyDataSetChanged();
+        }
+    };
+
+    private WishlistEventResponseListener wishlistEventResponseListener = new WishlistEventResponseListener() {
+        @Override
+        public void didFetch(WishlistResponse response, String message) {
+            Toast.makeText(getActivity(), "Action " + response.data, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void didError(String message) {
+            Toast.makeText(getActivity(), "Error " + message, Toast.LENGTH_LONG).show();
         }
     };
 }
