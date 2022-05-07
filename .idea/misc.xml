@@ -47,12 +47,13 @@
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/content_map.xml" value="0.12158054711246201" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/content_map_view.xml" value="0.1" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/fragment_demo_collection_pager_adapter.xml" value="0.2380538662033015" />
-        <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/fragment_favorite.xml" value="0.1" />
+        <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/fragment_favorite.xml" value="0.25" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/fragment_notification.xml" value="0.1" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/fragment_settings.xml" value="0.2" />
-        <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/list_booking_item.xml" value="0.2" />
+        <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/list_booking_item.xml" value="0.536" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/list_booking_item_seleced.xml" value="0.1" />
+        <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/list_wishlist_item.xml" value="0.4700162074554295" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/layout/spinner_list_item.xml" value="0.15489130434782608" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="..\:/AirJ18BookingApp/app/src/main/res/menu/menu_clear.xml" value="0.1" />

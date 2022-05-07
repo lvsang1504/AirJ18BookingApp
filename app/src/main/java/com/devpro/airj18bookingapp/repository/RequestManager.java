@@ -10,6 +10,7 @@ import com.devpro.airj18bookingapp.listeners.RegisterResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
 import com.devpro.airj18bookingapp.listeners.WishlistEventResponseListener;
+import com.devpro.airj18bookingapp.listeners.WishlistListAllResponseListener;
 import com.devpro.airj18bookingapp.listeners.WishlistListResponseListener;
 import com.devpro.airj18bookingapp.models.CategoryResponse;
 import com.devpro.airj18bookingapp.models.Response.BookingResponse;
@@ -20,6 +21,7 @@ import com.devpro.airj18bookingapp.models.UserRegister;
 import com.devpro.airj18bookingapp.models.UserResponse;
 import com.devpro.airj18bookingapp.models.WishlistListIdResponse;
 import com.devpro.airj18bookingapp.models.WishlistResponse;
+import com.devpro.airj18bookingapp.models.WishlistResponseData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -269,6 +271,27 @@ public class RequestManager {
         });
     }
 
+    public void getAllWishlists(WishlistListAllResponseListener listener, String cookie) {
+        CallAllWishList callAllWishList = retrofit.create(CallAllWishList.class);
+        Call<WishlistResponseData> call = callAllWishList.getWishListResponseCall(cookie);
+        call.enqueue(new Callback<WishlistResponseData>() {
+            @Override
+            public void onResponse(Call<WishlistResponseData> call, Response<WishlistResponseData> response) {
+                if (!response.isSuccessful()) {
+                    Log.d("XXXX1", response.errorBody() + "hfdh");
+                    listener.didError(response.message());
+                    return;
+                }
+                Log.d("XXXX", response.body().success + "");
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<WishlistResponseData> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -276,6 +299,12 @@ public class RequestManager {
         @Headers({"Content-Type: application/json"})
         @GET("/api/categories")
         Call<CategoryResponse> categoryResponseCall();
+    }
+
+    private interface CallAllWishList {
+        @Headers({"Content-Type: application/json"})
+        @GET("/api/user/wishlists")
+        Call<WishlistResponseData> getWishListResponseCall(@Header("Cookie") String cookie);
     }
 
     private interface CallWishListData {
