@@ -48,17 +48,18 @@ import java.util.Date;
 
 public class BookingActivity extends AppCompatActivity {
 
-    static TextView txtCheckin,txtCheckout,btn_proceed;
-    Button btnSetCheckin,btnSetCheckout;
+    static TextView txtCheckin, txtCheckout, btn_proceed;
+    Button btnSetCheckin, btnSetCheckout;
     RoomDetail roomDetail;
     RequestManager manager;
-    int numberOfDays=0;
-    static Date dateCheckin,dateCheckout;
+    int numberOfDays = 0;
+    static Date dateCheckin, dateCheckout;
     private PreferenceManager preferenceManager;
     BookingDetailDTO bookingDetailDTO;
+
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
-        int flag=0;
+        int flag = 0;
 
         public DatePickerFragment(int flag) {
             this.flag = flag;
@@ -78,27 +79,28 @@ public class BookingActivity extends AppCompatActivity {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
-            if(flag==1){
-                String sDate=day+"-"+month+"-"+year;
+            if (flag == 1) {
+                String sDate = day + "-" + month + "-" + year;
                 try {
-                    dateCheckin=new SimpleDateFormat("dd-MM-yyyy").parse(sDate);
+                    dateCheckin = new SimpleDateFormat("dd-MM-yyyy").parse(sDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                txtCheckin.setText(day+"-"+month+"-"+year);
-            }else{
-                String sDate=day+"-"+month+"-"+year;
+                txtCheckin.setText(day + "-" + month + "-" + year);
+            } else {
+                String sDate = day + "-" + month + "-" + year;
                 try {
-                    dateCheckout=new SimpleDateFormat("dd-MM-yyyy").parse(sDate);
+                    dateCheckout = new SimpleDateFormat("dd-MM-yyyy").parse(sDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                txtCheckout.setText(day+"-"+month+"-"+year);
+                txtCheckout.setText(day + "-" + month + "-" + year);
 
             }
 
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,12 +112,6 @@ public class BookingActivity extends AppCompatActivity {
         setControl();
         setEvent();
         getViews();
-
-
-
-
-
-
 
 
         //Hide status bar and navigation bar at the bottom
@@ -156,30 +152,31 @@ public class BookingActivity extends AppCompatActivity {
                 long diff = dateCheckout.getTime() - dateCheckin.getTime();
                 long diffDays = diff / (24 * 60 * 60 * 1000) + 1;
                 daysdiff = (int) diffDays;
-                numberOfDays=daysdiff;
+                numberOfDays = daysdiff;
 
                 String cookie = preferenceManager.getString(Constants.KEY_COOKIE);
-                String cookie1=cookie;
+                String cookie1 = cookie;
                 manager = new RequestManager(BookingActivity.this);
-                manager.getBooking(bookingResponseListener,roomDetail.id,txtCheckin.getText().toString(),txtCheckout.getText().toString(),numberOfDays,cookie);
-
+                manager.getBooking(bookingResponseListener, roomDetail.id, txtCheckin.getText().toString(), txtCheckout.getText().toString(), numberOfDays, cookie);
 
 
             }
         });
     }
+
     private void setControl() {
-        txtCheckin=findViewById(R.id.txtCheckin);
-        txtCheckout=findViewById(R.id.txtCheckout);
-        btnSetCheckin=findViewById(R.id.btnSetCheckin);
-        btnSetCheckout=findViewById(R.id.btnSetCheckout);
-        btn_proceed=findViewById(R.id.btn_proceed);
+        txtCheckin = findViewById(R.id.txtCheckin);
+        txtCheckout = findViewById(R.id.txtCheckout);
+        btnSetCheckin = findViewById(R.id.btnSetCheckin);
+        btnSetCheckout = findViewById(R.id.btnSetCheckout);
+        btn_proceed = findViewById(R.id.btn_proceed);
     }
 
     public void showDatePickerDialog(int flag) {
         DialogFragment newFragment = new DatePickerFragment(flag);
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
+
     private void getViews() {
     }
 
@@ -190,8 +187,8 @@ public class BookingActivity extends AppCompatActivity {
     private final BookingResponseListener bookingResponseListener = new BookingResponseListener() {
         @Override
         public void didFetch(BookingResponse response, String message) {
-            Toast.makeText(BookingActivity.this,"Booking success", Toast.LENGTH_LONG).show();
-            bookingDetailDTO=response.data;
+            Toast.makeText(BookingActivity.this, "Booking success", Toast.LENGTH_LONG).show();
+            bookingDetailDTO = response.data;
             Intent intent = new Intent(BookingActivity.this, BookingFinishActivity.class);
             Gson gson = new Gson();
             String myJson = gson.toJson(bookingDetailDTO);
@@ -201,7 +198,7 @@ public class BookingActivity extends AppCompatActivity {
 
         @Override
         public void didError(String message) {
-            Toast.makeText(BookingActivity.this,message+" booking fail", Toast.LENGTH_LONG).show();
+            Toast.makeText(BookingActivity.this, message + " booking fail", Toast.LENGTH_LONG).show();
         }
     };
 }
