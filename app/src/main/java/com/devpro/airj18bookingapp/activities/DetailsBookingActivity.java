@@ -2,6 +2,7 @@ package com.devpro.airj18bookingapp.activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.OnSwipe;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.ActivityOptions;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devpro.airj18bookingapp.R;
+import com.devpro.airj18bookingapp.listeners.OnSwipeTouchListener;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.models.RoomDetail;
 import com.devpro.airj18bookingapp.models.RoomDetailResponse;
@@ -124,6 +127,25 @@ public class DetailsBookingActivity extends AppCompatActivity {
                     intent.putExtra("room_detail", myJson);
 
                     startActivity(intent, options.toBundle());
+                }
+            });
+            image_background.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Intent intent = new Intent(DetailsBookingActivity.this, ShowMoreActivity.class);
+
+                    Pair[] pairs = new Pair[1];
+                    pairs[0] = new Pair<View, String>(second_arrow_up, "background_image_transition");
+
+
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(DetailsBookingActivity.this, pairs);
+
+                    Gson gson = new Gson();
+                    String myJson = gson.toJson(response.data);
+                    intent.putExtra("room_detail", myJson);
+
+                    startActivity(intent, options.toBundle());
+                    return false;
                 }
             });
         }

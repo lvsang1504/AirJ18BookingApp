@@ -74,5 +74,8 @@ dependencies {
     implementation('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6') {
         transitive = true
     }
+    //mail
+    implementation 'com.sun.mail:android-mail:1.6.0'
+    implementation 'com.sun.mail:android-activation:1.6.0'
 
 }
