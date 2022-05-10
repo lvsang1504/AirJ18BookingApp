@@ -3,6 +3,7 @@ package com.devpro.airj18bookingapp.repository;
 import android.content.Context;
 import android.util.Log;
 
+import com.devpro.airj18bookingapp.listeners.BookingResponseDetailListener;
 import com.devpro.airj18bookingapp.listeners.BookingResponseListener;
 import com.devpro.airj18bookingapp.listeners.CategoryResponseListener;
 import com.devpro.airj18bookingapp.listeners.LoginResponseListener;
@@ -12,6 +13,7 @@ import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
 import com.devpro.airj18bookingapp.listeners.WishlistEventResponseListener;
 import com.devpro.airj18bookingapp.listeners.WishlistListAllResponseListener;
 import com.devpro.airj18bookingapp.listeners.WishlistListResponseListener;
+import com.devpro.airj18bookingapp.models.BookingResponseDetail;
 import com.devpro.airj18bookingapp.models.CategoryResponse;
 import com.devpro.airj18bookingapp.models.Response.BookingResponse;
 import com.devpro.airj18bookingapp.models.RoomDetailResponse;
@@ -293,7 +295,34 @@ public class RequestManager {
         });
     }
 
+    public void getBookingResponseDetail(BookingResponseDetailListener listener, String cookie) {
+        CallBookingDetail callBookingDetail = retrofit.create(CallBookingDetail.class);
+        Call<BookingResponseDetail> call = callBookingDetail.bookingResponseCall(cookie);
+        call.enqueue(new Callback<BookingResponseDetail>() {
+            @Override
+            public void onResponse(Call<BookingResponseDetail> call, Response<BookingResponseDetail> response) {
+                if (!response.isSuccessful()) {
+                    Log.d("XXXX1", response.errorBody() + "hfdh");
+                    listener.didError(response.message());
+                    return;
+                }
+                Log.d("XXXX", response.body().success + "");
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<BookingResponseDetail> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    private interface CallBookingDetail {
+        @Headers({"Content-Type: application/json"})
+        @GET("/api/user/booked-rooms?query=")
+        Call<BookingResponseDetail> bookingResponseCall(@Header("Cookie") String cookie);
+    }
 
     private interface CallCategories {
         @Headers({"Content-Type: application/json"})

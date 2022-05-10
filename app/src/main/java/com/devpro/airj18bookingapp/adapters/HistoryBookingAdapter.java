@@ -9,15 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.devpro.airj18bookingapp.R;
+import com.devpro.airj18bookingapp.models.BookedRoom;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
 public class HistoryBookingAdapter extends RecyclerView.Adapter<HistoryBookingAdapter.ViewHolder>{
-    ArrayList<Object> list;
+    ArrayList<BookedRoom> list;
 
-    public HistoryBookingAdapter(ArrayList<Object> list) {
+    public HistoryBookingAdapter(ArrayList<BookedRoom> list) {
         this.list = list;
     }
 
@@ -30,10 +31,10 @@ public class HistoryBookingAdapter extends RecyclerView.Adapter<HistoryBookingAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //holder.tvID.setText(list.get(position).getId()+"");
+        holder.tvID.setText(list.get(position).bookingId+"");
 //        String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(orders.get(position).getCreateAt());
 //        holder.tv_date.setText(stringDate);
-        //holder.tvName.setText(list.get(position).getName());
+        holder.tvName.setText(list.get(position).bookingDate);
 
     }
 
