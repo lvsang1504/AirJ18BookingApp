@@ -1,11 +1,15 @@
 package com.devpro.airj18bookingapp.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +27,9 @@ import com.devpro.airj18bookingapp.utils.Constants;
 import com.devpro.airj18bookingapp.utils.PreferenceManager;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -36,6 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private PreferenceManager preferenceManager;
     Animation anim_from_button, anim_from_top, anim_from_left;
+
+    private String encodedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +97,52 @@ public class ProfileActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                pickImage.launch(intent);
+            }
+        });
     }
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            profile_image.setImageBitmap(bitmap);
+                            encodedImage = encodeImage(bitmap);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
+
+    private String encodeImage(Bitmap bitmap) {
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
 
     private void loadUserDetails() {
         profile_email.setText(preferenceManager.getString(Constants.KEY_EMAIL));
         profile_username.setText(preferenceManager.getString(Constants.KEY_NAME));
         profile_name.setText(preferenceManager.getString(Constants.KEY_NAME));
-        if(preferenceManager.getString(Constants.KEY_IMAGE)!=null){
+        if (preferenceManager.getString(Constants.KEY_IMAGE) != null) {
             profile_name.setText(preferenceManager.getString(Constants.KEY_NAME));
             byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -105,17 +153,8 @@ public class ProfileActivity extends AppCompatActivity {
     private void signOut() {
         showToast("Signing out ...");
         preferenceManager.clear();
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USER).document(preferenceManager.getString(Constants.KEY_USER_ID));
-//        HashMap<String, Object> updates = new HashMap<>();
-//        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
-//        documentReference.update(updates)
-//                .addOnSuccessListener(unused -> {
-//                    preferenceManager.clear();
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    finish();
-//                })
-//                .addOnFailureListener(e -> showToast("Unable to sign out"));
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
     private void getViews() {
