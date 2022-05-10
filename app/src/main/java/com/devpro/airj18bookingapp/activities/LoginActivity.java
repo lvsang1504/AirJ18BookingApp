@@ -3,6 +3,7 @@ package com.devpro.airj18bookingapp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private PreferenceManager preferenceManager;
     Button buttonSignIn;
-    TextView textCreateNewAccount, textView, textView2;
+    TextView textCreateNewAccount, textView, textView2, textForgotPassword;
     EditText inputEmail, inputPassword;
     ProgressBar progressBar;
     Animation anim_from_button, anim_from_top, anim_from_left;
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        textForgotPassword = findViewById(R.id.textForgotPassword);
         textCreateNewAccount = findViewById(R.id.textCreateNewAccount);
         buttonSignIn = findViewById(R.id.buttonSignIn);
         inputEmail = findViewById(R.id.inputEmail);
@@ -114,6 +116,24 @@ public class LoginActivity extends AppCompatActivity {
                 if (isValidSignUpDetails()) {
                     signIn();
                 }
+            }
+        });
+        textForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(inputEmail.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "Enter email", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                //Kiem tra email co ton tai hay k
+                //Toast.makeText(LoginActivity.this, "Email not exist", Toast.LENGTH_LONG).show();
+                //Qua man hinh gui OTP
+                Intent intent = new Intent(LoginActivity.this, OTPActivity.class);
+                intent.putExtra("gmail",inputEmail.getText().toString());
+                Log.d("gmail",inputEmail.getText().toString());
+                startActivity(intent);
+
+
             }
         });
     }
