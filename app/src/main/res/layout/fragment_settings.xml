@@ -245,7 +245,7 @@
                 android:background="@color/md_grey_200" />
 
             <LinearLayout
-                android:id="@+id/lvl_privacy"
+                android:id="@+id/lvl_pdf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -280,7 +280,7 @@
                 android:background="@color/md_grey_200" />
 
             <LinearLayout
-                android:id="@+id/lvl_teams"
+                android:id="@+id/lvl_chart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -298,7 +298,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="Terms &amp; Condition"
+                    android:text="Biểu đồ"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
 

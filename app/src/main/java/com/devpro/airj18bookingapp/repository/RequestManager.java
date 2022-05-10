@@ -358,6 +358,4 @@ public class RequestManager {
                                                   @Header("Cookie") String cookie);
     }
 
-
-
 }
