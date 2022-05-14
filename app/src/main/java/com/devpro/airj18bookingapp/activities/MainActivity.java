@@ -8,20 +8,36 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.devpro.airj18bookingapp.R;
+import com.devpro.airj18bookingapp.adapters.PostAdapter;
 import com.devpro.airj18bookingapp.fragments.FavoriteFragment;
 import com.devpro.airj18bookingapp.fragments.HomeFragment;
 import com.devpro.airj18bookingapp.fragments.NotificationFragment;
 import com.devpro.airj18bookingapp.fragments.Settings2Fragment;
 import com.devpro.airj18bookingapp.fragments.SettingsFragment;
+import com.devpro.airj18bookingapp.models.Notification;
+import com.devpro.airj18bookingapp.utils.Constants;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     NotificationFragment notificationFragment = new NotificationFragment();
     FavoriteFragment favoriteFragment = new FavoriteFragment();
     Locale mLocale;
+    BadgeDrawable badgeDrawable;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -60,9 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
 
-        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.notification);
-        badgeDrawable.setVisible(true);
-        badgeDrawable.setNumber(8);
+        badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.notification);
+
 
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -103,5 +119,33 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 
         );
+    }
+
+    private void getDataHistoryNotification() {
+
+        DatabaseReference fallDetector = FirebaseDatabase
+                .getInstance("https://airj18-booking-app-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                .getReference("Notifications");
+        Query fallDetectQuery = fallDetector.orderByKey();
+        fallDetectQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Notification> notifications = new ArrayList<>();
+
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    notifications.add(postSnapshot.getValue(Notification.class));
+                }
+
+                badgeDrawable.setVisible(true);
+                badgeDrawable.setNumber(notifications.size());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

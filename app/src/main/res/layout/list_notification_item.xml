@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:contentDescription="For more ui/ux visit www.materialuiux.com"
+    tools:ignore="HardcodedText">
+
+    <!-- post layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="For more ui/ux visit www.materialuiux.com">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:contentDescription="For more ui/ux visit www.materialuiux.com"
+            tools:ignore="UselessParent">
+
+            <!-- background post  -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginEnd="35dp"
+                android:background="@drawable/bg_recat"
+                android:contentDescription="For more ui/ux visit www.materialuiux.com">
+
+                <TextView
+                    android:id="@+id/id_postText_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginTop="31dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="30dp"
+                    android:contentDescription="For more ui/ux visit www.materialuiux.com"
+                    android:gravity="center|left"
+                    android:maxLines="3"
+                    android:text="From error to error, one discovers the entire truth.” “From error to error, one discovers the entire truth.” Sigmund Freud."
+                    android:textColor="@color/md_grey_700"
+                    android:textSize="18sp"
+                    tools:ignore="RtlHardcoded" />
+
+
+            </RelativeLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="For more ui/ux visit www.materialuiux.com"
+                android:padding="12dp"
+                android:src="@drawable/logo"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="154dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_rectangle"
+        android:contentDescription="For more ui/ux visit www.materialuiux.com">
+
+        <TextView
+            android:id="@+id/text_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="For more ui/ux visit www.materialuiux.com"
+            android:gravity="center"
+            android:text="04 December 2018"
+            android:textColor="@color/bg_light_blue" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
