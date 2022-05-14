@@ -157,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                 preferenceManager.putString(Constants.KEY_USER_ID, userResponse.data.id + "");
                 preferenceManager.putString(Constants.KEY_NAME, userResponse.data.fullName);
                 preferenceManager.putString(Constants.KEY_COOKIE, cookie);
+                //preferenceManager.putString(Constants.KEY_AVATAR_PATH,userResponse.data.avatarPath);
 
                 Log.d("VVV", Constants.BASE_URL + userResponse.data.avatarPath);
                 Log.d("cookie", cookie);

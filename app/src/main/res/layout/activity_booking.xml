@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".activities.BookingActivity">
 
 
@@ -54,45 +55,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="16dp"
-                    android:max="5"
-                    android:numStars="5"
-                    android:progressTint="@color/colorAccent"
-                    android:rating="4.5"
-                    android:stepSize="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_title" />
 
-                <TextView
-                    android:id="@+id/txt_rate_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:text="4.91"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toEndOf="@id/ratingBar"
-                    app:layout_constraintTop_toBottomOf="@id/txt_title" />
 
-                <TextView
-                    android:id="@+id/txt_num_vote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:text="(510)"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:layout_constraintStart_toEndOf="@id/txt_rate_num"
-                    app:layout_constraintTop_toTopOf="@+id/txt_rate_num" />
+
+
+
 
                 <ImageView
                     android:id="@+id/profile_back"
@@ -125,130 +92,95 @@
                         android:orientation="vertical"
                         android:padding="0dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/round_couponcode"
-                            android:gravity="center|left"
-                            android:padding="10dp">
 
-                            <ImageView
-                                android:layout_width="42dp"
-                                android:layout_height="42dp"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_coupon" />
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginLeft="20dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginRight="20dp"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:padding="2dp">-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="1"
-                                android:padding="5dp"
-                                android:text="Apply Coupon"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:text="Cart Value" />-->
 
-                            <ImageView
-                                android:id="@+id/img_coopncode"
-                                android:layout_width="42dp"
-                                android:layout_height="42dp"
-                                android:padding="3dp"
-                                android:src="@drawable/ic_round_home_24" />
-                        </LinearLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/txt_itemtotal"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="2"-->
+<!--                                android:padding="3dp"-->
+<!--                                android:text=""-->
+<!--                                android:textColor="@color/colorPrimaryDark"-->
+<!--                                android:textStyle="bold" />-->
+<!--                        </LinearLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="20dp"
-                            android:orientation="horizontal"
-                            android:padding="2dp">
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginLeft="20dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginRight="20dp"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:padding="2dp">-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Cart Value" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:text="Delivery Charges" />-->
 
-                            <TextView
-                                android:id="@+id/txt_itemtotal"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:padding="3dp"
-                                android:text=""
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/txt_dcharge"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="2"-->
+<!--                                android:padding="3dp"-->
+<!--                                android:text=""-->
+<!--                                android:textColor="@color/colorPrimaryDark"-->
+<!--                                android:textStyle="bold" />-->
+<!--                        </LinearLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="20dp"
-                            android:orientation="horizontal"
-                            android:padding="2dp">
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginLeft="20dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginRight="20dp"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:padding="2dp">-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Delivery Charges" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:text="Discount" />-->
 
-                            <TextView
-                                android:id="@+id/txt_dcharge"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:padding="3dp"
-                                android:text=""
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="20dp"
-                            android:orientation="horizontal"
-                            android:padding="2dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Discount" />
-
-                            <TextView
-                                android:id="@+id/txt_Discount"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:padding="3dp"
-                                android:text=""
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/txt_Discount"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="2"-->
+<!--                                android:padding="3dp"-->
+<!--                                android:text=""-->
+<!--                                android:textColor="@color/colorPrimaryDark"-->
+<!--                                android:textStyle="bold" />-->
+<!--                        </LinearLayout>-->
 
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-                            android:textStyle="bold" />
+<!--                        <TextView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "-->
+<!--                            android:textStyle="bold" />-->
 
-                        <LinearLayout
+                        <!--<LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
@@ -274,7 +206,7 @@
                                 android:text=""
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textStyle="bold" />
-                        </LinearLayout>
+                        </LinearLayout>-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -297,7 +229,7 @@
                                 android:textStyle="bold" />
 
                             <EditText
-                                android:id="@+id/ed_customnot"
+                                android:id="@+id/edit_message"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -323,20 +255,21 @@
                             android:layout_marginRight="20dp"
                             android:background="@drawable/box"
                             android:padding="5dp"
-                            android:weightSum="10"
+                            android:weightSum="20"
                             android:orientation="horizontal">
                             <TextView
-                                android:layout_weight="9"
+                                android:layout_weight="19"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/txtCheckin"
-                                android:text="aaa"/>
+                                android:text=""/>
                             <Button
-                                android:layout_weight="1"
+
                                 android:id="@+id/btnSetCheckin"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Set"/>
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/calendar"
+                                />
 
 
 
@@ -359,19 +292,20 @@
                             android:layout_marginRight="20dp"
                             android:background="@drawable/box"
                             android:padding="5dp"
+                            android:weightSum="20"
                             android:orientation="horizontal">
                             <TextView
-                                android:layout_weight="9"
+                                android:layout_weight="19"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/txtCheckout"
-                                android:text="aaaa"/>
+                                android:text=""/>
                             <Button
-                                android:layout_weight="1"
+
                                 android:id="@+id/btnSetCheckout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Set" />
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/calendar" />
 
 
 
@@ -455,7 +389,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/rounded_button"
                     android:gravity="center"
-                    android:text="Proceed To Buy"
+                    android:text="Booking"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="18dp"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Đặt phòng khách sạn</string>
+    <string name="booked">Lịch sử đặt phòng</string>
+    <string name="about">Về chúng tôi</string>
+    <string name="contact">Liên hệ</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="chart">Biểu đồ</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="home">Trang chủ</string>
+    <string name="notification">Thông  báo</string>
+    <string name="favorite">Yêu thích</string>
+    <string name="settings">Cài đặt</string>
+    <string name="yourFavorite">Các mục bạn yêu thích</string>
+    <string name="notificationNotFound">Không có</string>
+    <string name="pdf">In PDF</string>
+    <string name="changLanguage">Bạn có muốn khởi động lại ứng dụng để thay đổi ngôn ngữ?</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+</resources>

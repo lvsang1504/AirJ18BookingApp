@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -37,12 +38,12 @@ public class ChartActivity extends AppCompatActivity {
 
     ArrayList<String> labels=new ArrayList<>();
 
-    TextView btn_back;
+    ImageView btn_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        btn_back=findViewById(R.id.btn_back);
+        btn_back=findViewById(R.id.iv_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

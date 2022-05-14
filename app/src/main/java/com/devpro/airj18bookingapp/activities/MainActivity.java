@@ -1,9 +1,13 @@
 package com.devpro.airj18bookingapp.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,26 +16,46 @@ import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.fragments.FavoriteFragment;
 import com.devpro.airj18bookingapp.fragments.HomeFragment;
 import com.devpro.airj18bookingapp.fragments.NotificationFragment;
+import com.devpro.airj18bookingapp.fragments.Settings2Fragment;
 import com.devpro.airj18bookingapp.fragments.SettingsFragment;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
     HomeFragment homeFragment = new HomeFragment();
-    SettingsFragment settingsFragment = new SettingsFragment();
+    Settings2Fragment settingsFragment = new Settings2Fragment();
     NotificationFragment notificationFragment = new NotificationFragment();
     FavoriteFragment favoriteFragment = new FavoriteFragment();
+    Locale mLocale;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(LocaleList.getDefault().get(0).getLanguage().equals("en")){
+            mLocale=new Locale("en");
+        }else {
+            mLocale=new Locale("vi");
+        }
 
+        if(this.getResources().getConfiguration().locale.equals("en")){
+
+        }else {
+
+        }
+
+        Locale.setDefault(mLocale);
+        Configuration config = new Configuration();
+        config.locale = mLocale;
+        this.getResources().updateConfiguration(config,
+                this.getResources().getDisplayMetrics());
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();

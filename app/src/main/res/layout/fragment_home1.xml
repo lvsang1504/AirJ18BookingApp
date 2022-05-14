@@ -3,28 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<!--    tools:context=".fragments.HomeFragment">-->
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="380dp"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="380dp"
-        app:layout_constraintStart_toStartOf="parent" />
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/bg_light_blue"
+    tools:context=".fragments.HomeFragment">
 
     <TextView
         android:id="@+id/firstText"
@@ -36,7 +18,7 @@
         android:text="One"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -74,7 +56,7 @@
         android:text="a"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/firstText" />
 
     <TextView
@@ -100,7 +82,7 @@
         android:background="@drawable/background_icon"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_account_circle"
-        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_corner_radius="8dp" />
 
@@ -108,31 +90,34 @@
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/custom_search_view"
         android:elevation="20dp"
+        android:outlineSpotShadowColor="@color/white"
         android:queryHint="Search here..."
-        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView3"
         tools:targetApi="lollipop" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:padding="8dp"
+        android:background="@color/white"
         app:tabGravity="fill"
+        app:tabTextColor="@color/second_text"
+        android:layout_marginTop="10dp"
         app:tabIndicatorAnimationMode="elastic"
         app:tabIndicatorGravity="stretch"
         app:tabMode="auto"
         app:tabIndicator="@drawable/custom_border_selected"
         app:tabSelectedTextColor="@color/second_text"
-        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView"
-        app:layout_constraintStart_toStartOf="@id/guideline"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
 
     <ScrollView
@@ -141,9 +126,9 @@
         android:layout_marginTop="10dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabLayout"
         app:layout_constraintVertical_bias="0.0">
 

@@ -70,12 +70,13 @@ public class HomeFragment extends Fragment {
     private PreferenceManager preferenceManager;
 
     String cookie;
+    int idCategory=1;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home1, container, false);
 
         navBar  = getActivity().findViewById(R.id.bottom_navigation);
 
@@ -124,8 +125,33 @@ public class HomeFragment extends Fragment {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 
         );
+        setEvents();
 
         return view;
+    }
+
+    private void setEvents() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(query!=""){
+                    manager.getRoomByQuery(listenerQuery,idCategory,query);
+                }
+                else{
+                    tabLayout.setVisibility(View.VISIBLE);
+                    manager.getCategories(categoryResponseListener);
+                    manager.getWishlists(wishlistListResponseListener, cookie);
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                manager.getRoomByQuery(listenerQuery,idCategory,newText);
+                return false;
+            }
+        });
     }
 
     private final WishlistListResponseListener wishlistListResponseListener = new WishlistListResponseListener() {
@@ -161,6 +187,7 @@ public class HomeFragment extends Fragment {
                 public void onTabSelected(TabLayout.Tab tab) {
                     manager.getRoomByCategory(randomRecipeResponseListener, tab.getPosition() + 1);
                     dialog.show();
+                    idCategory=tab.getPosition();
                 }
 
                 @Override
@@ -194,6 +221,23 @@ public class HomeFragment extends Fragment {
         @Override
         public void didError(String message) {
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private final RoomResponseListener listenerQuery = new RoomResponseListener() {
+        @Override
+        public void didFetch(RoomResponse response, String message) {
+            //Toast.makeText(getContext(),"listenerQuerySuccess:"+ message, Toast.LENGTH_LONG).show();
+            dialog.dismiss();
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            adapter = new BookingAdapter(getContext(), response.data, listWishlistId, bookingClicksListener);
+            recyclerView.setAdapter(adapter);
+        }
+
+        @Override
+        public void didError(String message) {
+            //Toast.makeText(getContext(),"listenerQueryError:"+ message, Toast.LENGTH_LONG).show();
         }
     };
 

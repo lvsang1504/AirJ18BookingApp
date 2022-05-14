@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class BookingActivity extends AppCompatActivity {
 
     static TextView txtCheckin, txtCheckout, btn_proceed;
     Button btnSetCheckin, btnSetCheckout;
+    EditText edit_message;
     RoomDetail roomDetail;
     RequestManager manager;
     int numberOfDays = 0;
@@ -80,6 +82,7 @@ public class BookingActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
             if (flag == 1) {
+                month++;
                 String sDate = day + "-" + month + "-" + year;
                 try {
                     dateCheckin = new SimpleDateFormat("dd-MM-yyyy").parse(sDate);
@@ -88,6 +91,7 @@ public class BookingActivity extends AppCompatActivity {
                 }
                 txtCheckin.setText(day + "-" + month + "-" + year);
             } else {
+                month++;
                 String sDate = day + "-" + month + "-" + year;
                 try {
                     dateCheckout = new SimpleDateFormat("dd-MM-yyyy").parse(sDate);
@@ -157,7 +161,7 @@ public class BookingActivity extends AppCompatActivity {
                 String cookie = preferenceManager.getString(Constants.KEY_COOKIE);
                 String cookie1 = cookie;
                 manager = new RequestManager(BookingActivity.this);
-                manager.getBooking(bookingResponseListener, roomDetail.id, txtCheckin.getText().toString(), txtCheckout.getText().toString(), numberOfDays, cookie);
+                manager.getBooking(bookingResponseListener, roomDetail.id, txtCheckin.getText().toString(), txtCheckout.getText().toString(),edit_message.getText().toString(), numberOfDays, cookie);
 
 
             }
@@ -170,6 +174,7 @@ public class BookingActivity extends AppCompatActivity {
         btnSetCheckin = findViewById(R.id.btnSetCheckin);
         btnSetCheckout = findViewById(R.id.btnSetCheckout);
         btn_proceed = findViewById(R.id.btn_proceed);
+        edit_message =findViewById(R.id.edit_message);
     }
 
     public void showDatePickerDialog(int flag) {

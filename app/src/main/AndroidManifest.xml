@@ -17,6 +17,9 @@
         android:theme="@style/Theme.AirJ18BookingApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name="com.devpro.airj18bookingapp.activities.BookedActivity"
+            android:exported="false" />
+        <activity
             android:name="com.devpro.airj18bookingapp.activities.ChartActivity"
             android:exported="false" />
         <activity

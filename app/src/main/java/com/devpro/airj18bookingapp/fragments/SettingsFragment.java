@@ -28,34 +28,18 @@ import java.util.List;
 
 public class SettingsFragment extends Fragment {
 
-    LinearLayout lvl_chart,lvl_pdf;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_settings, container, false);
 
-        getViews(view);
-        setEvent();
+
 
         return view;
     }
 
-    private void setEvent() {
-        lvl_chart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ChartActivity.class));
-            }
-        });
-        lvl_pdf.setOnClickListener(view -> {
 
-        });
-    }
-
-    private void getViews(View view) {
-        lvl_pdf=view.findViewById(R.id.lvl_pdf);
-        lvl_chart=view.findViewById(R.id.lvl_chart);
-    }
 
 }

@@ -98,6 +98,27 @@ public class RequestManager {
         });
     }
 
+    public void getRoomByQuery(RoomResponseListener listener, int id,String search) {
+        CallRoomByQuery callRandomRecipes = retrofit.create(CallRoomByQuery.class);
+        Call<RoomResponse> call = callRandomRecipes.roomResponseCallQuery(id,search);
+        call.enqueue(new Callback<RoomResponse>() {
+            @Override
+            public void onResponse(Call<RoomResponse> call, Response<RoomResponse> response) {
+                if (!response.isSuccessful()) {
+                    listener.didError(response.message());
+                    return;
+                }
+
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<RoomResponse> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
+
     public void getRoomDetail(RoomDetailResponseListener listener, int id) {
         CallRoomDetail callRoomDetail = retrofit.create(CallRoomDetail.class);
         Call<RoomDetailResponse> call = callRoomDetail.roomDetailResponseCall(id);
@@ -118,9 +139,9 @@ public class RequestManager {
         });
     }
 
-    public void getBooking(BookingResponseListener listener, int roomid, String checkin, String checkout, int numberOfDays, String cookie) {
+    public void getBooking(BookingResponseListener listener, int roomid, String checkin, String checkout,String clientMessage, int numberOfDays, String cookie) {
         CallBooking callBooking = retrofit.create(CallBooking.class);
-        Call<BookingResponse> call = callBooking.bookingResponseCall(roomid, checkin, checkout, numberOfDays, "any", cookie);
+        Call<BookingResponse> call = callBooking.bookingResponseCall(roomid, checkin, checkout, numberOfDays, clientMessage, cookie);
         call.enqueue(new Callback<BookingResponse>() {
             @Override
             public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
@@ -369,6 +390,11 @@ public class RequestManager {
     private interface CallRoomByCategory {
         @GET("/api/rooms")
         Call<RoomResponse> roomResponseCall(@Query("categoryId") int id);
+    }
+    private interface CallRoomByQuery {
+        @GET("/api/rooms")
+        Call<RoomResponse> roomResponseCallQuery(@Query("categoryId") int id,
+                @Query("query") String query);
     }
 
     private interface CallRoomDetail {
