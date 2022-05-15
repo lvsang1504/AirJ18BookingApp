@@ -15,38 +15,26 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.activities.DetailsBookingActivity;
 import com.devpro.airj18bookingapp.activities.ProfileActivity;
 import com.devpro.airj18bookingapp.adapters.BookingAdapter;
-import com.devpro.airj18bookingapp.listeners.BookingClicksListener;
-import com.devpro.airj18bookingapp.listeners.CategoryResponseListener;
-import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
-import com.devpro.airj18bookingapp.listeners.WishlistEventResponseListener;
-import com.devpro.airj18bookingapp.listeners.WishlistListResponseListener;
-import com.devpro.airj18bookingapp.models.Category;
-import com.devpro.airj18bookingapp.models.CategoryResponse;
-import com.devpro.airj18bookingapp.models.RoomResponse;
-import com.devpro.airj18bookingapp.models.WishlistListIdResponse;
-import com.devpro.airj18bookingapp.models.WishlistResponse;
+import com.devpro.airj18bookingapp.listeners.*;
+import com.devpro.airj18bookingapp.models.*;
 import com.devpro.airj18bookingapp.repository.RequestManager;
 import com.devpro.airj18bookingapp.utils.Constants;
 import com.devpro.airj18bookingapp.utils.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
+import dmax.dialog.SpotsDialog;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import dmax.dialog.SpotsDialog;
 
 public class HomeFragment extends Fragment {
 

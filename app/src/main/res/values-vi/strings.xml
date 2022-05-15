@@ -17,4 +17,5 @@
     <string name="changLanguage">Bạn có muốn khởi động lại ứng dụng để thay đổi ngôn ngữ?</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
+    <string name="room_not_available">Phòng không có sẳn ở khoảng thời gian này.</string>
 </resources>

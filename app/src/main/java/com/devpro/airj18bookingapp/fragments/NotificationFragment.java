@@ -177,7 +177,7 @@ public class NotificationFragment extends Fragment {
     }
 
     private void showToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     private void getToken() {

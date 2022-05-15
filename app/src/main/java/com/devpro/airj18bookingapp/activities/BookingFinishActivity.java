@@ -2,6 +2,7 @@ package com.devpro.airj18bookingapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +15,7 @@ import com.google.gson.Gson;
 public class BookingFinishActivity extends AppCompatActivity {
 
     BookingDetailDTO bookingDetailDTO;
-    TextView txt_orderdate,txt_orderid;
+    TextView txt_orderdate,txt_orderid,txt_home;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,13 @@ public class BookingFinishActivity extends AppCompatActivity {
         Gson gson = new Gson();
         bookingDetailDTO = gson.fromJson(json, BookingDetailDTO.class);
         setData();
+        setEvent();
+    }
+
+    private void setEvent() {
+        txt_home.setOnClickListener(view -> {
+            startActivity(new Intent(this,MainActivity.class));
+        });
     }
 
     private void setData() {
@@ -34,6 +42,7 @@ public class BookingFinishActivity extends AppCompatActivity {
     private void setControl() {
         txt_orderid=findViewById(R.id.txt_orderid);
         txt_orderdate=findViewById(R.id.txt_orderdate);
+        txt_home=findViewById(R.id.txt_home);
     }
 
     public void backClick(View view) {

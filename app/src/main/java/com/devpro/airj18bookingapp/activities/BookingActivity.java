@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.util.Pair;
 import android.view.DragEvent;
@@ -46,6 +47,15 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class BookingActivity extends AppCompatActivity {
 
@@ -193,6 +203,20 @@ public class BookingActivity extends AppCompatActivity {
         @Override
         public void didFetch(BookingResponse response, String message) {
             Toast.makeText(BookingActivity.this, "Booking success", Toast.LENGTH_LONG).show();
+            //Send email
+            String mail=preferenceManager.getString(Constants.KEY_EMAIL);
+            String content="Email xác nhận đặt phòng thành công"+"\n"+
+                    response.data.getId()+"\n"+
+                    response.data.getBookingDate()+"\n"+
+                    response.data.getTotalFee()+response.data.getCurrencySymbol()+"\n";
+
+            if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy =
+                        new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
+
+            sendEmail(mail,content);
             bookingDetailDTO = response.data;
             Intent intent = new Intent(BookingActivity.this, BookingFinishActivity.class);
             Gson gson = new Gson();
@@ -203,7 +227,38 @@ public class BookingActivity extends AppCompatActivity {
 
         @Override
         public void didError(String message) {
-            Toast.makeText(BookingActivity.this, message + " booking fail", Toast.LENGTH_LONG).show();
+            Toast.makeText(BookingActivity.this, R.string.room_not_available, Toast.LENGTH_LONG).show();
+
         }
     };
+    private void sendEmail(String gmail,String content) {
+        final String username="nhanhuu2808@gmail.com";
+        final String password="Nhan2808";
+        //
+        String messageToSend=content;
+        Properties properties=new Properties();
+        properties.put("mail.smtp.auth","true");
+        properties.put("mail.smtp.starttls.enable","true");
+        properties.put("mail.smtp.host","smtp.gmail.com");
+        properties.put("mail.smtp.port","587");
+        Session session=Session.getInstance(properties,
+                new javax.mail.Authenticator(){
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication(){
+                        return new PasswordAuthentication(username,password);
+                    }
+                });
+        try {
+            Message message=new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(gmail));
+            message.setSubject("Air Booking");
+            message.setText(messageToSend);
+            Transport.send(message);
+            Toast.makeText(this,"Send Email successfully",Toast.LENGTH_LONG).show();
+        }catch (MessagingException e){
+            throw  new RuntimeException(e);
+        }
+
+    }
 }

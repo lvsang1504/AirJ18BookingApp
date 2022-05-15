@@ -29,4 +29,5 @@
     <string name="changLanguage">Do you want to restart the app to change the language?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="room_not_available">The room is not available at this time.</string>
 </resources>
