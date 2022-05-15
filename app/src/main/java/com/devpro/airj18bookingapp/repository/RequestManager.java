@@ -7,6 +7,7 @@ import com.devpro.airj18bookingapp.listeners.BookingResponseDetailListener;
 import com.devpro.airj18bookingapp.listeners.BookingResponseListener;
 import com.devpro.airj18bookingapp.listeners.CategoryResponseListener;
 import com.devpro.airj18bookingapp.listeners.LoginResponseListener;
+import com.devpro.airj18bookingapp.listeners.PasswordResponseListener;
 import com.devpro.airj18bookingapp.listeners.RegisterResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomDetailResponseListener;
 import com.devpro.airj18bookingapp.listeners.RoomResponseListener;
@@ -16,6 +17,7 @@ import com.devpro.airj18bookingapp.listeners.WishlistListResponseListener;
 import com.devpro.airj18bookingapp.models.BookingResponseDetail;
 import com.devpro.airj18bookingapp.models.CategoryResponse;
 import com.devpro.airj18bookingapp.models.Response.BookingResponse;
+import com.devpro.airj18bookingapp.models.Response.PasswordResponse;
 import com.devpro.airj18bookingapp.models.RoomDetailResponse;
 import com.devpro.airj18bookingapp.models.RoomResponse;
 import com.devpro.airj18bookingapp.models.UserLogin;
@@ -337,6 +339,25 @@ public class RequestManager {
             }
         });
     }
+    public void resetPassword(PasswordResponseListener listener, String email,String password) {
+        CallResetPassword callResetPassword = retrofit.create(CallResetPassword.class);
+        Call<PasswordResponse> call = callResetPassword.resetPassword(email,password,password);
+        call.enqueue(new Callback<PasswordResponse>() {
+            @Override
+            public void onResponse(Call<PasswordResponse> call, Response<PasswordResponse> response) {
+                if (!response.isSuccessful()) {
+                    listener.didError(response.message());
+                    return;
+                }
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<PasswordResponse> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     private interface CallBookingDetail {
@@ -378,12 +399,12 @@ public class RequestManager {
     }
 
     private interface CallLogin {
-        @POST("api/auth/login")
+        @POST("/api/auth/login")
         Call<UserResponse> loginUser(@Body UserLogin userLogin);
     }
 
     private interface CallRegister {
-        @POST("api/user/register")
+        @POST("/api/user/register")
         Call<UserResponse> registerUser(@Body UserRegister userRegister);
     }
 
@@ -395,6 +416,13 @@ public class RequestManager {
         @GET("/api/rooms")
         Call<RoomResponse> roomResponseCallQuery(@Query("categoryId") int id,
                 @Query("query") String query);
+    }
+
+    private interface CallResetPassword {
+        @PUT("/api/auth/reset-password")
+        Call<PasswordResponse> resetPassword(@Query("userEmail") String userEmail,
+                                             @Query("newPassword") String newPassword,
+                                             @Query("confirmNewPassword") String confirmNewPassword);
     }
 
     private interface CallRoomDetail {
