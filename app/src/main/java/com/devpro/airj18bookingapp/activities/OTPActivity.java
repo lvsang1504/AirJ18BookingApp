@@ -50,7 +50,7 @@ public class OTPActivity extends AppCompatActivity {
     private void sendOTP() {
         final String username="nhanhuu2808@gmail.com";
         final String password="Nhan2808";
-        String messageToSend="Mã OTP xác nhận QL Nhập Kho:"+ randomOTP;
+        String messageToSend="Mã OTP Đặt phòng:"+ randomOTP;
         Properties properties=new Properties();
         properties.put("mail.smtp.auth","true");
         properties.put("mail.smtp.starttls.enable","true");
@@ -67,7 +67,7 @@ public class OTPActivity extends AppCompatActivity {
             Message message=new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(gmail));
-            message.setSubject("QL Nhap kho send OTP");
+            message.setSubject("Dat phong send OTP");
             message.setText(messageToSend);
             Transport.send(message);
             Toast.makeText(this,"Send Email successfully",Toast.LENGTH_LONG).show();
