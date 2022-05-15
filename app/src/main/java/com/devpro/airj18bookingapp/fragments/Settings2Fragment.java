@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -223,8 +225,8 @@ public class Settings2Fragment extends Fragment {
     //private void createInvoice1(List<TableData> list, PhieuNhap phieuNhap, Kho kho) throws IOException {
     private void createInvoice1() throws IOException {
         int pageWidth = 1200;
-//        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.dp);
-//        Bitmap bmpScale = Bitmap.createScaledBitmap(bmp, 1200, 518, false);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+        Bitmap bmpScale = Bitmap.createScaledBitmap(bmp, 1200, 518, false);
 
         PdfDocument myPdfDocument = new PdfDocument();
         Paint paint = new Paint();
@@ -234,13 +236,13 @@ public class Settings2Fragment extends Fragment {
         PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo);
         Canvas canvas = myPage1.getCanvas();
 
-//        canvas.drawBitmap(bmpScale,0,0,paint);
+        canvas.drawBitmap(bmpScale,0,0,paint);
 
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setColor(Color.BLACK);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(90);
-        canvas.drawText("THÔNG TIN NHẬP KHO", pageWidth / 2, 270, titlePaint);
+        canvas.drawText("Invoice booking", pageWidth / 2, 600, titlePaint);
 
         titlePaint.setTextAlign(Paint.Align.LEFT);
         titlePaint.setColor(Color.GRAY);
