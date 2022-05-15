@@ -16,6 +16,7 @@ import com.devpro.airj18bookingapp.listeners.WishlistListAllResponseListener;
 import com.devpro.airj18bookingapp.listeners.WishlistListResponseListener;
 import com.devpro.airj18bookingapp.models.BookingResponseDetail;
 import com.devpro.airj18bookingapp.models.CategoryResponse;
+import com.devpro.airj18bookingapp.models.ResetPass;
 import com.devpro.airj18bookingapp.models.Response.BookingResponse;
 import com.devpro.airj18bookingapp.models.Response.PasswordResponse;
 import com.devpro.airj18bookingapp.models.RoomDetailResponse;
@@ -100,9 +101,9 @@ public class RequestManager {
         });
     }
 
-    public void getRoomByQuery(RoomResponseListener listener, int id,String search) {
+    public void getRoomByQuery(RoomResponseListener listener, int id, String search) {
         CallRoomByQuery callRandomRecipes = retrofit.create(CallRoomByQuery.class);
-        Call<RoomResponse> call = callRandomRecipes.roomResponseCallQuery(id,search);
+        Call<RoomResponse> call = callRandomRecipes.roomResponseCallQuery(id, search);
         call.enqueue(new Callback<RoomResponse>() {
             @Override
             public void onResponse(Call<RoomResponse> call, Response<RoomResponse> response) {
@@ -141,7 +142,7 @@ public class RequestManager {
         });
     }
 
-    public void getBooking(BookingResponseListener listener, int roomid, String checkin, String checkout,String clientMessage, int numberOfDays, String cookie) {
+    public void getBooking(BookingResponseListener listener, int roomid, String checkin, String checkout, String clientMessage, int numberOfDays, String cookie) {
         CallBooking callBooking = retrofit.create(CallBooking.class);
         Call<BookingResponse> call = callBooking.bookingResponseCall(roomid, checkin, checkout, numberOfDays, clientMessage, cookie);
         call.enqueue(new Callback<BookingResponse>() {
@@ -339,21 +340,45 @@ public class RequestManager {
             }
         });
     }
-    public void resetPassword(PasswordResponseListener listener, String email,String password) {
+
+    public void resetPassword(PasswordResponseListener listener, String email, String password) {
         CallResetPassword callResetPassword = retrofit.create(CallResetPassword.class);
-        Call<PasswordResponse> call = callResetPassword.resetPassword(email,password,password);
+        Log.d("BBBBB", email + "/" + password);
+        Call<PasswordResponse> call = callResetPassword.resetPassword(new ResetPass(email, password, password));
         call.enqueue(new Callback<PasswordResponse>() {
             @Override
             public void onResponse(Call<PasswordResponse> call, Response<PasswordResponse> response) {
-                if (!response.isSuccessful()) {
-                    listener.didError(response.message());
+
+                if (response.code() == 400) {
+                    if (!response.isSuccessful()) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.errorBody().string());
+                            //JSONObject errorMessage = jsonObject.getJSONObject("error");
+                            listener.didError(jsonObject.getString("error"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     return;
                 }
+
+//                System.out.println(response.body().toString());
+//                listener.didFetch(response.body(), response.message());
+//
+//
+//                if (!response.isSuccessful()) {
+//                    listener.didError(response.message());
+//                    return;
+//                }
                 listener.didFetch(response.body(), response.message());
             }
 
             @Override
             public void onFailure(Call<PasswordResponse> call, Throwable t) {
+                Log.d("FFFF", "Fail");
                 listener.didError(t.getMessage());
             }
         });
@@ -412,17 +437,17 @@ public class RequestManager {
         @GET("/api/rooms")
         Call<RoomResponse> roomResponseCall(@Query("categoryId") int id);
     }
+
     private interface CallRoomByQuery {
         @GET("/api/rooms")
         Call<RoomResponse> roomResponseCallQuery(@Query("categoryId") int id,
-                @Query("query") String query);
+                                                 @Query("query") String query);
     }
 
     private interface CallResetPassword {
+        @Headers({"Content-Type: application/json"})
         @PUT("/api/auth/reset-password")
-        Call<PasswordResponse> resetPassword(@Query("userEmail") String userEmail,
-                                             @Query("newPassword") String newPassword,
-                                             @Query("confirmNewPassword") String confirmNewPassword);
+        Call<PasswordResponse> resetPassword(@Body ResetPass resetPass);
     }
 
     private interface CallRoomDetail {
