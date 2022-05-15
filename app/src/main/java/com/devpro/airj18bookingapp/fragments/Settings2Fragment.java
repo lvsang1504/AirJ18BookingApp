@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class Settings2Fragment extends Fragment {
     String LOCALE_ENGLISH = "en";
     Locale mLocale;
     TextView tvLanguage;
+    TextView settings,bookingHistory,about,contact,language,chart,pdf,logout;
 
     RequestManager manager;
     private PreferenceManager preferenceManager;
@@ -100,6 +102,9 @@ public class Settings2Fragment extends Fragment {
                 getContext().getResources().updateConfiguration(config1,
                         getContext().getResources().getDisplayMetrics());
                 tvLanguage.setText(mLocale.toString());
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new Settings2Fragment()).commit();
+
+
             }//if
             else if (LOCALE_ENGLISH.equals(mLocale.toString()))
             {
@@ -110,6 +115,7 @@ public class Settings2Fragment extends Fragment {
                 getContext().getResources().updateConfiguration(config1,
                         getContext().getResources().getDisplayMetrics());
                 tvLanguage.setText(mLocale.toString());
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new Settings2Fragment()).commit();
             }//else if
 
         });
@@ -120,12 +126,6 @@ public class Settings2Fragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]
                             {Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     PackageManager.PERMISSION_GRANTED);
-//            if (ContextCompat.checkSelfPermission(
-//                    getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) ==
-//                    PackageManager.PERMISSION_GRANTED
-//            && ContextCompat.checkSelfPermission(
-//                    getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-//                    PackageManager.PERMISSION_GRANTED) {
                 try {
                     createInvoice1();
                     Toast.makeText(getContext(), "duoc", Toast.LENGTH_SHORT).show();
@@ -134,10 +134,36 @@ public class Settings2Fragment extends Fragment {
                     Toast.makeText(getContext(), "khong", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
-//            }
 
         });
     }
+    int i=1;
+    private void setText(Locale locale) {
+
+        if(i%1!=0){//settings,bookingHistory,about,contact,language,chart,pdf,logout
+            tvLanguage.setText(locale.toString());
+            settings.setText("Cài đặt");
+            bookingHistory.setText("Lịch sử đặt phòng");
+            about.setText("Về chúng tôi");
+            contact.setText("Liên hệ");
+            language.setText("Ngôn ngữ");
+            chart.setText("Biểu đồ");
+            pdf.setText("In PDF");
+            logout.setText("Đăng xuất");
+        }else {
+            tvLanguage.setText(locale.toString());
+            settings.setText("Settings");
+            bookingHistory.setText("Booking history");
+            about.setText("About");
+            contact.setText("Contact");
+            language.setText("Language");
+            chart.setText("Chart");
+            pdf.setText("Print PDF");
+            logout.setText("Logout");
+        }
+        i++;
+    }
+
     private void dialog(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
         builder1.setMessage(R.string.changLanguage);
@@ -171,6 +197,17 @@ public class Settings2Fragment extends Fragment {
         lvl_booked=view.findViewById(R.id.lvl_booked);
         tvLanguage=view.findViewById(R.id.tvLanguage);
         lvl_pdf=view.findViewById(R.id.lvl_pdf);
+
+
+        settings=view.findViewById(R.id.settings);
+        bookingHistory=view.findViewById(R.id.bookingHistory);
+        about=view.findViewById(R.id.about);
+        contact=view.findViewById(R.id.contact);
+        language=view.findViewById(R.id.language);
+        chart=view.findViewById(R.id.chart);
+        pdf=view.findViewById(R.id.pdf);
+        logout=view.findViewById(R.id.logout);
+
     }
     private final BookingResponseDetailListener bookingResponseDetailListener = new BookingResponseDetailListener() {
         @Override

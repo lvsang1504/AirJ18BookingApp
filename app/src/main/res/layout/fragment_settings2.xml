@@ -9,6 +9,7 @@
     tools:context=".fragments.Settings2Fragment">
 
     <TextView
+        android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -43,6 +44,7 @@
                     android:src="@drawable/ic_booked" />
 
                 <TextView
+                    android:id="@+id/bookingHistory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -86,6 +88,7 @@
                     android:src="@drawable/ic_info" />
 
                 <TextView
+                    android:id="@+id/about"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -121,6 +124,7 @@
                     android:src="@drawable/ic_communication" />
 
                 <TextView
+                    android:id="@+id/contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -156,6 +160,7 @@
                     android:src="@drawable/ic_translation" />
 
                 <TextView
+                    android:id="@+id/language"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -200,6 +205,7 @@
                     android:src="@drawable/ic_chart" />
 
                 <TextView
+                    android:id="@+id/chart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -235,6 +241,7 @@
                     android:src="@drawable/ic_print_file" />
 
                 <TextView
+                    android:id="@+id/pdf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -265,6 +272,7 @@
 
 
                 <TextView
+                    android:id="@+id/logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
