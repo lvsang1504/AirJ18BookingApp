@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
     private PreferenceManager preferenceManager;
 
     String cookie;
-    int idCategory=1;
+    int idCategory = 1;
 
 
     @Override
@@ -175,7 +175,7 @@ public class HomeFragment extends Fragment {
                 public void onTabSelected(TabLayout.Tab tab) {
                     manager.getRoomByCategory(randomRecipeResponseListener, tab.getPosition() + 1);
                     dialog.show();
-                    idCategory=tab.getPosition();
+                    idCategory = tab.getPosition() + 1;
                 }
 
                 @Override

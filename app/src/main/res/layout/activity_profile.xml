@@ -152,12 +152,12 @@
 
             <TextView
                 android:id="@+id/usrusr"
-                android:layout_width="0dp"
+                android:layout_width="9dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#0000"
                 android:gravity="left"
-                android:maxLength="12"
+                android:maxLength="15"
                 android:padding="16dp"
                 android:text="Tên người dùng"
                 android:textColor="#a2a1b8"
