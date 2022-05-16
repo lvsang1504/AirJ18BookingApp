@@ -9,8 +9,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.devpro.airj18bookingapp.adapters.HistoryBookingAdapter;
+import com.devpro.airj18bookingapp.listeners.BookingResponseDetailListener;
+import com.devpro.airj18bookingapp.models.BookedRoom;
+import com.devpro.airj18bookingapp.models.BookingResponseDetail;
+import com.devpro.airj18bookingapp.repository.RequestManager;
+import com.devpro.airj18bookingapp.utils.Constants;
+import com.devpro.airj18bookingapp.utils.PreferenceManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -36,6 +44,12 @@ public class ChartActivity extends AppCompatActivity {
     // array list for storing entries.
     ArrayList barEntriesArrayList;
 
+    RequestManager manager;
+
+    private PreferenceManager preferenceManager;
+
+    String cookie;
+
     ArrayList<String> labels=new ArrayList<>();
 
     ImageView btn_back;
@@ -43,6 +57,14 @@ public class ChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+
+
+        preferenceManager = new PreferenceManager(this);
+        cookie = preferenceManager.getString(Constants.KEY_COOKIE);
+        manager = new RequestManager(this);
+        barEntriesArrayList = new ArrayList<>();
+
+
         btn_back=findViewById(R.id.iv_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +77,44 @@ public class ChartActivity extends AppCompatActivity {
 
 
         // calling method to get bar entries.
+
+        manager.getBookingResponseDetail(bookingResponseDetailListener, cookie);
+
+
+
         getBarEntries();
 
-        // creating a new bar data set.
+
+
+
+    }
+
+    private final BookingResponseDetailListener bookingResponseDetailListener = new BookingResponseDetailListener() {
+        @Override
+        public void didFetch(BookingResponseDetail response, String message) {
+            float i=1f;
+            for (BookedRoom a:response.data.bookedRooms) {
+                barEntriesArrayList.add(new BarEntry(i, (float) (a.pricePerDay*a.numberOfDays)));
+                i++;
+            }
+
+            Log.d("OOOO", barEntriesArrayList.size()+"");
+            getBarEntries();
+
+            barChart.invalidate();
+        }
+
+        @Override
+        public void didError(String message) {
+            Toast.makeText(ChartActivity.this, message, Toast.LENGTH_LONG).show();
+        }
+    };
+
+
+
+    public void getBarEntries() {
+        // creating a new array list
+
         barDataSet = new BarDataSet(barEntriesArrayList, "");
 
         // creating a new bar data and
@@ -78,20 +135,15 @@ public class ChartActivity extends AppCompatActivity {
         // setting text size
         barDataSet.setValueTextSize(16f);
         barChart.getDescription().setEnabled(false);
-    }
-
-    private void getBarEntries() {
-        // creating a new array list
-        barEntriesArrayList = new ArrayList<>();
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
-        barEntriesArrayList.add(new BarEntry(1f, 4));
-        barEntriesArrayList.add(new BarEntry(2f, 6));
-        barEntriesArrayList.add(new BarEntry(3f, 8));
-        barEntriesArrayList.add(new BarEntry(4f, 2));
-        barEntriesArrayList.add(new BarEntry(5f, 4));
-        barEntriesArrayList.add(new BarEntry(6f, 1));
+//        barEntriesArrayList.add(new BarEntry(1f, 4));
+//        barEntriesArrayList.add(new BarEntry(2f, 6));
+//        barEntriesArrayList.add(new BarEntry(3f, 8));
+//        barEntriesArrayList.add(new BarEntry(4f, 2));
+//        barEntriesArrayList.add(new BarEntry(5f, 4));
+//        barEntriesArrayList.add(new BarEntry(6f, 1));
 
 
     }
