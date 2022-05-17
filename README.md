@@ -1,3 +1,3 @@
 # AirJ18BookingApp
 Đồ án Lập trình di động 
-![image](https://user-images.githubusercontent.com/76673112/157054732-18787059-cf1d-480c-9454-0fd324b4f5fa.png)
+https://user-images.githubusercontent.com/76673112/168821121-873ae5c7-acce-49bf-8ae3-baf0494ed7fe.mp4
