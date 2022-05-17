@@ -36,6 +36,7 @@ import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.activities.AboutActivity;
 import com.devpro.airj18bookingapp.activities.BookedActivity;
 import com.devpro.airj18bookingapp.activities.ChartActivity;
+import com.devpro.airj18bookingapp.activities.LoginActivity;
 import com.devpro.airj18bookingapp.activities.MainActivity;
 import com.devpro.airj18bookingapp.adapters.HistoryBookingAdapter;
 import com.devpro.airj18bookingapp.listeners.BookingResponseDetailListener;
@@ -148,6 +149,12 @@ public class Settings2Fragment extends Fragment {
             Intent open = new Intent(getActivity(), AboutActivity.class);
             startActivity(open);
         });
+        logout.setOnClickListener(view -> signOut());
+    }
+    private void signOut() {
+        preferenceManager.clear();
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        getActivity().finish();
     }
     int i=1;
     private void setText(Locale locale) {

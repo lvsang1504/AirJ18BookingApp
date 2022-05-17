@@ -5,12 +5,12 @@ public class User{
     public boolean status;
     public long createdDate;
     public long updatedDate;
-    public String avatar;
     public String firstName;
     public String lastName;
     public String sex;
     public String birthday;
     public String email;
+    public String cookie;
     public Role role;
     public String phoneNumber;
     public boolean phoneVerified;

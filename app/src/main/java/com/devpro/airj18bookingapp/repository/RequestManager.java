@@ -211,8 +211,7 @@ public class RequestManager {
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response.errorBody().string());
-                            JSONObject errorMessage = jsonObject.getJSONObject("error");
-                            listener.didError(errorMessage.getString("message"));
+                            listener.didError(jsonObject.getString("error"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -222,7 +221,7 @@ public class RequestManager {
                     return;
                 }
 
-                System.out.println(response.body().toString());
+               // System.out.println(response.body().toString());
                 listener.didFetch(response.body(), response.message());
 
             }
@@ -429,7 +428,7 @@ public class RequestManager {
     }
 
     private interface CallRegister {
-        @POST("/api/user/register")
+        @POST("/api/auth/register")
         Call<UserResponse> registerUser(@Body UserRegister userRegister);
     }
 
