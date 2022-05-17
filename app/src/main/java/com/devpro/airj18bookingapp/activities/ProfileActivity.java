@@ -119,6 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             profile_image.setImageBitmap(bitmap);
                             encodedImage = encodeImage(bitmap);
+                            preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
