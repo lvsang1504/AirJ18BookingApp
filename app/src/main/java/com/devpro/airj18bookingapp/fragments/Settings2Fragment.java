@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.devpro.airj18bookingapp.BuildConfig;
 import com.devpro.airj18bookingapp.R;
+import com.devpro.airj18bookingapp.activities.AboutActivity;
 import com.devpro.airj18bookingapp.activities.BookedActivity;
 import com.devpro.airj18bookingapp.activities.ChartActivity;
 import com.devpro.airj18bookingapp.activities.MainActivity;
@@ -50,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Settings2Fragment extends Fragment {
-    LinearLayout lvl_chart,lvl_language,lvl_booked,lvl_pdf;
+    LinearLayout lvl_chart,lvl_language,lvl_booked,lvl_pdf,lvl_contact,lvl_about;
     String LOCALE_VIETNAM = "vi";
     String LOCALE_ENGLISH = "en";
     Locale mLocale;
@@ -138,6 +140,14 @@ public class Settings2Fragment extends Fragment {
                 }
 
         });
+        lvl_contact.setOnClickListener(view -> {
+            Intent open = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/sang.luong.1504/"));
+            startActivity(open);
+        });
+        lvl_about.setOnClickListener(view -> {
+            Intent open = new Intent(getActivity(), AboutActivity.class);
+            startActivity(open);
+        });
     }
     int i=1;
     private void setText(Locale locale) {
@@ -199,6 +209,8 @@ public class Settings2Fragment extends Fragment {
         lvl_booked=view.findViewById(R.id.lvl_booked);
         tvLanguage=view.findViewById(R.id.tvLanguage);
         lvl_pdf=view.findViewById(R.id.lvl_pdf);
+        lvl_contact=view.findViewById(R.id.lvl_contact);
+        lvl_about=view.findViewById(R.id.lvl_about);
 
 
         settings=view.findViewById(R.id.settings);

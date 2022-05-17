@@ -1,11 +1,14 @@
 package com.devpro.airj18bookingapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -84,6 +87,9 @@ public class BookedActivity extends AppCompatActivity {
 
         @Override
         public void onBookingGetInvoiceClicked(BookedRoom bookedRoom) {
+            ActivityCompat.requestPermissions(BookedActivity.this, new String[]
+                            {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PackageManager.PERMISSION_GRANTED);
             try {
                 createInvoice1(bookedRoom);
             } catch (IOException e) {
@@ -136,7 +142,7 @@ public class BookedActivity extends AppCompatActivity {
         canvas.drawText(bookedRoom.roomName, 350, 1100, titlePaint);
 
         canvas.drawText("Ngày đặt: ", 50, 1200, titlePaint);
-        canvas.drawText(bookedRoom.checkoutDate, 350, 1200, titlePaint);
+        canvas.drawText(bookedRoom.checkinDate, 350, 1200, titlePaint);
 
         canvas.drawText("Ngày trả: ", 50, 1300, titlePaint);
         canvas.drawText(bookedRoom.checkoutDate, 350, 1300, titlePaint);
