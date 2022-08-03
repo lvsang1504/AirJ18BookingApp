@@ -93,7 +93,7 @@ public class Settings2Fragment extends Fragment {
         lvl_chart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ChartActivity.class));
+//                startActivity(new Intent(getActivity(), ChartActivity.class));
             }
         });
 
@@ -146,8 +146,8 @@ public class Settings2Fragment extends Fragment {
             startActivity(open);
         });
         lvl_about.setOnClickListener(view -> {
-            Intent open = new Intent(getActivity(), AboutActivity.class);
-            startActivity(open);
+//            Intent open = new Intent(getActivity(), AboutActivity.class);
+//            startActivity(open);
         });
         logout.setOnClickListener(view -> signOut());
     }

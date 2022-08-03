@@ -216,7 +216,7 @@ public class BookingActivity extends AppCompatActivity {
                 StrictMode.setThreadPolicy(policy);
             }
 
-            sendEmail(mail,content);
+//            sendEmail(mail,content);
             bookingDetailDTO = response.data;
             Intent intent = new Intent(BookingActivity.this, BookingFinishActivity.class);
             Gson gson = new Gson();

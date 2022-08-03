@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AirJ18 Booking App</string>
-    <string name="mapbox_access_token" translatable="false">pk.eyJ1Ijoic2FuZzAxMCIsImEiOiJjbDJxYXprZnMwMDl3M2RxaHhhbTF4Zm44In0.0CEOCvmscPFaE79KvWPTIQ</string>
+    <string name="mapbox_access_token" translatable="false">pk.eyJ1Ijoic2FuZzAxMCIsImEiOiJjbDY4cGliZTkwZmk2M2JsenB2OTRqc21vIn0.BSzfb21zO23xkMCwIJae-g</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="welcome_back" translatable="false">Welcome back</string>
     <string name="title_activity_map_view" translatable="false">MapViewActivity</string>

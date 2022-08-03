@@ -19,6 +19,8 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.devpro.airj18bookingapp.BuildConfig;
@@ -40,6 +42,8 @@ import java.io.OutputStreamWriter;
 public class BookedActivity extends AppCompatActivity {
     RecyclerView rv_history_booking;
     RequestManager manager;
+    LinearLayout lvl_notfound;
+
 
     private PreferenceManager preferenceManager;
 
@@ -63,11 +67,15 @@ public class BookedActivity extends AppCompatActivity {
 
     private void setViews() {
         rv_history_booking = findViewById(R.id.rv_history_booking);
+        lvl_notfound = findViewById(R.id.lvl_notfound);
     }
 
     private final BookingResponseDetailListener bookingResponseDetailListener = new BookingResponseDetailListener() {
         @Override
         public void didFetch(BookingResponseDetail response, String message) {
+            if(response.data.bookedRooms.size()>0) {
+                lvl_notfound.setVisibility(View.GONE);
+            }
             HistoryBookingAdapter adapter = new HistoryBookingAdapter(response.data.bookedRooms, historyBookingListener);
             rv_history_booking.setAdapter(adapter);
         }

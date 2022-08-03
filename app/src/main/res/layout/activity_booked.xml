@@ -64,6 +64,7 @@ tools:context=".activities.BookedActivity">
     app:layout_constraintTop_toBottomOf="@id/firstText">
 
     <ImageView
+        android:id="@+id/ic_not_found"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
         android:src="@drawable/ic_not_found" />
@@ -84,7 +85,6 @@ tools:context=".activities.BookedActivity">
     android:layout_height="0dp"
     android:layout_marginTop="10dp"
     android:scrollbars="none"
-    android:background="@color/bg_light_blue"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/firstText">

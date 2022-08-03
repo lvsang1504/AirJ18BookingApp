@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         );
 
         this.getWindow().getDecorView().setSystemUiVisibility(
-
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -121,31 +120,4 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void getDataHistoryNotification() {
-
-        DatabaseReference fallDetector = FirebaseDatabase
-                .getInstance("https://airj18-booking-app-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                .getReference("Notifications");
-        Query fallDetectQuery = fallDetector.orderByKey();
-        fallDetectQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Notification> notifications = new ArrayList<>();
-
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    notifications.add(postSnapshot.getValue(Notification.class));
-                }
-
-                badgeDrawable.setVisible(true);
-                badgeDrawable.setNumber(notifications.size());
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

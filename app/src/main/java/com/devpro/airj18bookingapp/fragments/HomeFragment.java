@@ -15,10 +15,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.devpro.airj18bookingapp.R;
 import com.devpro.airj18bookingapp.activities.DetailsBookingActivity;
 import com.devpro.airj18bookingapp.activities.ProfileActivity;
@@ -26,11 +28,13 @@ import com.devpro.airj18bookingapp.adapters.BookingAdapter;
 import com.devpro.airj18bookingapp.listeners.*;
 import com.devpro.airj18bookingapp.models.*;
 import com.devpro.airj18bookingapp.repository.RequestManager;
+import com.devpro.airj18bookingapp.repository.ServiceImpl;
 import com.devpro.airj18bookingapp.utils.Constants;
 import com.devpro.airj18bookingapp.utils.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
+
 import dmax.dialog.SpotsDialog;
 
 import java.util.ArrayList;
@@ -46,7 +50,8 @@ public class HomeFragment extends Fragment {
 
     Animation anim_from_button, anim_from_top, anim_from_left, from_right;
 
-    RequestManager manager;
+    //    RequestManager manager;
+    ServiceImpl service;
     List<Integer> listWishlistId = new ArrayList<>();
 
     BottomNavigationView navBar;
@@ -66,7 +71,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home1, container, false);
 
-        navBar  = getActivity().findViewById(R.id.bottom_navigation);
+        navBar = getActivity().findViewById(R.id.bottom_navigation);
+        service = new ServiceImpl(baseResponseListener);
 
 
         getViews(view);
@@ -75,10 +81,9 @@ public class HomeFragment extends Fragment {
         cookie = preferenceManager.getString(Constants.KEY_COOKIE);
         loadUserDetails();
 
-        manager = new RequestManager(getContext());
-        manager.getCategories(categoryResponseListener);
-        manager.getWishlists(wishlistListResponseListener, cookie);
-
+//        manager = new RequestManager(getContext());
+        service.getCategories(categoryResponseListener);
+        service.getWishlists(wishlistListResponseListener, cookie);
 
 
         //Load Animations
@@ -118,17 +123,28 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    BaseResponseListener baseResponseListener = new BaseResponseListener() {
+        @Override
+        public void didFetch(Object response) {
+
+        }
+
+        @Override
+        public void didError(int code, String message) {
+
+        }
+    };
+
     private void setEvents() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(query!=""){
-                    manager.getRoomByQuery(listenerQuery,idCategory,query);
-                }
-                else{
+                if (query != "") {
+                    service.getRoomByQuery(listenerQuery, idCategory, query);
+                } else {
                     tabLayout.setVisibility(View.VISIBLE);
-                    manager.getCategories(categoryResponseListener);
-                    manager.getWishlists(wishlistListResponseListener, cookie);
+                    service.getCategories(categoryResponseListener);
+                    service.getWishlists(wishlistListResponseListener, cookie);
                 }
 
                 return false;
@@ -136,7 +152,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                manager.getRoomByQuery(listenerQuery,idCategory,newText);
+                service.getRoomByQuery(listenerQuery, idCategory, newText);
                 return false;
             }
         });
@@ -148,7 +164,7 @@ public class HomeFragment extends Fragment {
             listWishlistId = response.data;
             navBar.getOrCreateBadge(R.id.favorite)
                     .setNumber(listWishlistId.size());
-            manager.getCategories(categoryResponseListener);
+            service.getCategories(categoryResponseListener);
         }
 
         @Override
@@ -167,13 +183,13 @@ public class HomeFragment extends Fragment {
                 tabLayout.addTab(tabLayout.newTab().setText(category.name));
             }
 
-            manager.getRoomByCategory(randomRecipeResponseListener, 1);
+            service.getRoomByCategory(randomRecipeResponseListener, 1);
             dialog.show();
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
-                    manager.getRoomByCategory(randomRecipeResponseListener, tab.getPosition() + 1);
+                    service.getRoomByCategory(randomRecipeResponseListener, tab.getPosition() + 1);
                     dialog.show();
                     idCategory = tab.getPosition() + 1;
                 }
@@ -270,12 +286,12 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onBookingFavoriteClicked(String id, boolean isLiked) {
-            System.out.println(isLiked+" "+id);
+            System.out.println(isLiked + " " + id);
             if (isLiked) {
-                manager.getRemoveWishlist(wishlistEventResponseListener, id, cookie);
+                service.getRemoveWishlist(wishlistEventResponseListener, id, cookie);
                 listWishlistId.remove(Integer.valueOf(id));
             } else {
-                manager.getAddWishlist(wishlistEventResponseListener, id, cookie);
+                service.getAddWishlist(wishlistEventResponseListener, id, cookie);
                 listWishlistId.add(Integer.parseInt(id));
             }
 
